@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Landing Page</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f7fc;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: row;
+      max-width: 1000px;
+      width: 100%;
+      height: 30vh;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .left-side {
+      background-color: #007bff;
+      color: #fff;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      flex: 1;
+    }
+
+    .right-side {
+      flex: 1;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 36px;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    p {
+      font-size: 18px;
+      margin-bottom: 40px;
+    }
+
+    input {
+      padding: 12px;
+      font-size: 16px;
+      width: 100%;
+      max-width: 300px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      margin-bottom: 20px;
+      transition: border-color 0.3s;
+    }
+
+    input:focus {
+      border-color: #007bff;
+    }
+
+    button {
+      padding: 12px 20px;
+      font-size: 18px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      max-width: 300px;
+      transition: background-color 0.3s;
+    }
+
+    button:disabled {
+      background-color: #c4c4c4;
+      cursor: not-allowed;
+    }
+
+    button:hover:not(:disabled) {
+      background-color: #0056b3;
+    }
+
+    #user-name-display {
+      font-size: 18px;
+      margin-bottom: 20px;
+      font-weight: normal;
+    }
+
+    .container .left-side p {
+      font-size: 16px;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        padding: 20px;
+      }
+
+      .left-side, .right-side {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="left-side">
+      <h1>Vitajte!</h1>
+      <p>Zadajte svoje meno a pokračujte do formulára.</p>
+    </div>
+    <div class="right-side">
+      <div id="user-name-display">
+        <!-- Meno používateľa sa tu zobrazí -->
+      </div>
+      <input type="text" id="user-name" placeholder="Zadajte svoje meno" />
+      <button id="continue-btn" disabled>Pokračovať</button>
+    </div>
+  </div>
+
+  <script>
+    // Pridávame event listener pre input pole, aby sme aktualizovali tlačidlo
+    document.getElementById('user-name').addEventListener('input', function() {
+      const userName = document.getElementById('user-name').value;
+      const continueBtn = document.getElementById('continue-btn');
+      const userNameDisplay = document.getElementById('user-name-display');
+
+      if (userName) {
+        continueBtn.disabled = false;
+        userNameDisplay.textContent = `Ahoj, ${userName}!`;
+      } else {
+        continueBtn.disabled = true;
+        userNameDisplay.textContent = '';
+      }
+    });
+
+    // Funkcia pre kliknutie na "Pokračovať" - uložíme meno do localStorage a prejdeme na ďalšiu stránku
+    document.getElementById('continue-btn').addEventListener('click', function() {
+      const userName = document.getElementById('user-name').value.trim();
+
+      if (userName) {
+        // Uložíme meno do localStorage
+        localStorage.setItem('userName', userName);
+
+        // Presmerujeme na hlavnú stránku
+        window.location.href = 'main.html';
+      }
+    });
+  </script>
+</body>
+</html>

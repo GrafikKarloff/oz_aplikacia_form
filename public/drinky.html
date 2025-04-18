@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="sk">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nápojový lístok</title>
+    <style>
+        :root {
+            --primary: #007bff;
+            --primary-dark: #0056b3;
+            --danger: #ff7272;
+            --danger-dark: #e33131;
+            --light-bg: #f4f7fa;
+            --reset: #fd943e;
+            --reset-dark: #ffb172;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #ffffff;
+            color: #333;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8vh;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input,
+        select,
+        textarea,
+        button {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .sirkaVyska,
+        .skupina1,
+        .downButton {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 2%;
+        }
+
+        .sirkaVyska input {
+            width: 48%;
+        }
+
+        .skupina1 select {
+            width: 40%;
+        }
+
+        .skupina1 {
+            margin-top: 1vh;
+            margin-bottom: 1vh;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .drink-options {
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+
+        .drink-section {
+            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .back-btn,
+        .resetButton,
+        .odoslatButton {
+            margin-top: 20px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            width: 48%;
+        }
+
+        .back-btn:hover,
+        .odoslatButton:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .resetButton {
+            background-color: var(--reset);
+        }
+
+        .resetButton:hover {
+            background-color: var(--reset-dark);
+        }
+
+        .addTatrateaButton {
+            background-color: rgb(141, 141, 141);
+            color: white;
+            cursor: pointer;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+    <h1 id="page-title"></h1>
+    <h2 id="business-name-heading"></h2>
+    <form id="drink-form">
+        <label>Mesto:</label>
+        <input type="text" name="mesto" required>
+
+        <label>Rozmery:</label>
+        <div class="sirkaVyska">
+            <input type="number" name="sirka" placeholder="Šírka">
+            <input type="number" name="vyska" placeholder="Výška">
+        </div>
+
+        <label>Číslo šablóny:</label>
+        <input type="number" name="cislo_sablony">
+
+        <label>Formát:</label>
+        <select name="format">
+            <option selected disabled>Zvoliť</option>
+            <option>A4</option>
+            <option>A5</option>
+            <option>A4 2x Biga</option>
+            <option>NL Genericky</option>
+            <option>A4-Biga</option>
+            <option>1/2 A4 na výšku</option>
+        </select>
+
+        <div class="skupina1">
+            <label>Pozadie:</label>
+            <select name="pozadie">
+                <option selected disabled>Zvoliť</option>
+                <option>Čierne</option>
+                <option>Biele</option>
+            </select>
+
+            <label>Materiál:</label>
+            <select name="material">
+                <option selected disabled>Zvoliť</option>
+                <option>Papier</option>
+                <option>Polyart tenký</option>
+                <option>Polyart hrubý</option>
+            </select>
+        </div>
+
+        <label>Počet kusov:</label>
+        <input type="number" name="pocet_kusov">
+
+        <label>Tlač:</label>
+        <select name="tlac">
+            <option selected disabled>Zvoliť</option>
+            <option>Jednostranná</option>
+            <option>Obojstranná</option>
+        </select>
+
+        <label>Väzba:</label>
+        <select name="vazba">
+            <option selected disabled>Zvoliť</option>
+            <option>Kovová</option>
+            <option>Plastová</option>
+        </select>
+
+        <label>Štýl:</label>
+        <select name="styl">
+            <option selected disabled>Zvoliť</option>
+            <option>Zátišie</option>
+            <option>Kreslené</option>
+            <option>Čisté</option>
+            <option>Ibatext</option>
+        </select>
+
+        <label>Poznámky:</label>
+        <textarea name="poznamky" placeholder="Všetky ostatné požiadavky..."></textarea>
+
+        <div id="tatratea-sections">
+            <!-- dynamické bloky TATRATEA sa vkladajú sem -->
+        </div>
+
+        <button type="button" onclick="addTatrateaSection()" class="addTatrateaButton">Pridať TATRATEA</button>
+        <div class="downButton">
+            <button type="button" class="odoslatButton" onclick="submitForm()">Odoslať</button>
+            <button type="button" class="resetButton" onclick="resetForm()">Reset</button>
+            <button type="button" class="back-btn" onclick="goBack()">Späť</button>
+        </div>
+
+    </form>
+
+    <script>
+        const tatrateaData = {
+            'TATRATEA 52': ['Shot - 0,04l TATRATEA 52 ', 'Caribik - citron, ľad, tonic', 'Up to you - TATRATEA 52, lad, Icetea, voda', 'Emerson - TATRATEA 52, pomarančový džus, citrón, ľad'],
+            'TATRATEA 62': ['Shot', 'Stormi', 'BerryIce', 'Lana', 'Dark'],
+            'TATRATEA 72': ['Shot', 'Stormi']
+        };
+
+        function addTatrateaSection() {
+            const section = document.createElement('div');
+            section.classList.add('drink-section');
+
+            const select = document.createElement('select');
+            select.innerHTML = `<option disabled selected>Vyber TATRATEA</option>` +
+                Object.keys(tatrateaData).map(k => `<option>${k}</option>`).join('');
+            select.style.width = `50%`;
+
+            const removeBtn = document.createElement('button');
+            removeBtn.textContent = 'Odstrániť';
+            removeBtn.type = 'button';
+            removeBtn.style.marginTop = '10px';
+            removeBtn.style.backgroundColor = 'var(--danger)';
+            removeBtn.style.color = 'white';
+            removeBtn.onclick = () => section.remove();
+            section.appendChild(removeBtn);
+
+            const drinksDiv = document.createElement('div');
+            drinksDiv.classList.add('drink-options');
+
+            select.addEventListener('change', () => {
+                const selected = select.value;
+                drinksDiv.innerHTML = '';
+                tatrateaData[selected]?.forEach(drink => {
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.style.marginTop = '20px';
+                    checkbox.id = `${selected}-${drink}`;
+                    checkbox.name = 'drink';
+                    checkbox.value = drink;
+
+                    const label = document.createElement('label');
+                    label.textContent = drink;
+                    label.setAttribute('for', checkbox.id);
+                    label.style.fontSize = `14px`;
+
+                    const recipe = document.createElement('div');
+                    recipe.textContent = `Receptúra pre ${drink}`;
+                    recipe.style.display = 'none';
+                    recipe.style.marginLeft = '20px';
+                    recipe.style.fontStyle = 'italic';
+
+                    checkbox.addEventListener('change', () => {
+                        recipe.style.display = checkbox.checked ? 'none' : 'none';
+                    });
+
+                    const wrapper = document.createElement('div');
+                    wrapper.appendChild(checkbox);
+                    wrapper.appendChild(label);
+                    wrapper.appendChild(recipe);
+                    drinksDiv.appendChild(wrapper);
+                });
+            });
+
+            section.appendChild(select);
+            section.appendChild(drinksDiv);
+            document.getElementById('tatratea-sections').appendChild(section);
+        }
+
+        function goBack() {
+            window.location.href = 'main.html';
+        }
+
+        window.onload = function () {
+            const userName = localStorage.getItem('userName');
+            const businessName = localStorage.getItem('businessName');
+            const heading = document.getElementById('business-name-heading');
+            const business = document.getElementById('page-title');
+
+            if (businessName) business.textContent = `Nápojový lístok - pre ${businessName}`;
+            else business.textContent = `Nápojový lístok`;
+            if (userName) heading.textContent = `Vitajte, ${userName}`;
+
+            addTatrateaSection(); // načítaj prvý výber TATRATEA automaticky
+        }
+
+        function resetForm() {
+            document.getElementById(`drink-form`).reset();
+            const container = document.getElementById('tatratea-sections');
+            container.innerHTML = '';
+            addTatrateaSection();
+        }
+
+        function submitForm() {
+            const form = document.getElementById('drink-form');
+            const formData = new FormData(form);
+
+            const data = {};
+            formData.forEach((value, key) => {
+                // Ak už kľúč existuje (napr. viaceré checkboxy), vlož ako pole
+                if (data[key]) {
+                    if (!Array.isArray(data[key])) {
+                        data[key] = [data[key]];
+                    }
+                    data[key].push(value);
+                } else {
+                    data[key] = value;
+                }
+            });
+
+            data.userName = localStorage.getItem('userName') || '-';
+            data.businessName = localStorage.getItem('businessName') || '-';
+            data.formType = 'drink';
+
+            fetch('http://127.0.0.1:3000/send', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Formulár bol úspešne odoslaný!');
+                        form.reset();
+                    } else {
+                        alert('Chyba pri odosielaní.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Chyba:', error);
+                    alert('Chyba pripojenia k serveru.');
+                });
+        }
+
+
+    </script>
+</body>
+
+</html>

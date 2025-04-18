@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="sk">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formulár pre tlačoviny</title>
+  <style>
+    :root {
+      --primary: #007bff;
+      --primary-dark: #0056b3;
+      --danger: #ff7272;
+      --danger-dark: #e33131;
+      --light-bg: #f4f7fa;
+      --form-width: 100%;
+      --form-max-width: 800px;
+      --reset: #fd943e;
+      --reset-dark: #ffb172;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--light-bg);
+      color: #333;
+      padding: 20px;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .headerTop {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      max-width: 800px;
+    }
+
+    .h1Nadpis {
+      width: 80%;
+    }
+
+    .logout_button {
+      background-color: var(--danger);
+      border: none;
+      width: 20%;
+      font-size: 14px;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .logout_button:hover {
+      background-color: var(--danger-dark);
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .input-section,
+    .buttons-section,
+    .form-section {
+      margin-top: 30px;
+      text-align: center;
+      width: 100%;
+      max-width: var(--form-max-width);
+    }
+
+    input,
+    select,
+    textarea,
+    button {
+      font-size: 16px;
+      padding: 12px;
+      margin: 12px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      width: 100%;
+      display: block;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+    }
+
+    .form-row {
+      display: flex;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    button {
+      cursor: pointer;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: var(--primary-dark);
+    }
+
+    button:disabled {
+      cursor: no-drop;
+      opacity: 0.6;
+    }
+
+    .form-section {
+      display: none;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .form-section form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .form-buttons {
+      display: flex;
+      flex-direction: row;
+      gap: 15px;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .buttons-section {
+      display: none;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .buttons-section button {
+      flex: 1 1 200px;
+    }
+
+    .uprava-main-button {
+      gap: 10px;
+      flex-wrap: wrap;
+      width: 100%;
+      margin: 30px;
+      text-align: center;
+    }
+
+    #change-business-section {
+      display: none;
+    }
+
+    #ad-btn,
+    #drink-menu-btn {
+      padding: 2em;
+    }
+
+    .resetButton {
+      background-color: var(--reset);
+    }
+
+    .resetButton:hover {
+      background-color: var(--reset-dark);
+    }
+
+    @media (max-width: 600px) {
+      .form-buttons {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .form-row {
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 460px) {
+      .headerTop {
+        flex-direction: column;
+        align-items: center;
+        width: 60vw;
+      }
+
+      .h1Nadpis {
+        width: 100%;
+        text-align: center;
+      }
+
+      .logout_button {
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .input-section,
+      .buttons-section,
+      .form-section {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="headerTop">
+    <h1 id="welcome-heading" class="h1Nadpis">Vitajte</h1>
+    <button onclick="logout()" class="logout_button">Odhlásiť</button>
+  </div>
+
+  <div class="input-section" id="intro-section">
+    <p>Zadajte meno prevádzky:</p>
+    <input type="text" id="business-name" placeholder="Meno prevádzky">
+    <button onclick="confirmBusinessName()" class="potvrditNazov">Potvrdiť názov</button>
+  </div>
+
+  <div class="buttons-section" id="menu-buttons">
+    <button id="drink-menu-btn" onclick="goToDrinky()">Nápojový lístok</button>
+    <button id="ad-btn" onclick="toggleForm('ad')">Tlačená reklama</button>
+  </div>
+
+  <div id="ad-form" class="form-section">
+    <div id="ad-change-placeholder"></div>
+    <h2>Tlačená reklama pre <span id="business-ad"></span></h2>
+    <form onsubmit="sendAdForm(event)">
+      <input type="text" name="mesto" placeholder="Mesto">
+      <div class="form-row">
+        <input type="number" name="sirka" placeholder="Šírka">
+        <input type="number" name="vyska" placeholder="Výška">
+        <select name="jednotka">
+          <option value="mm">Milimetre</option>
+          <option value="cm">Centimetre</option>
+          <option value="m">Metre</option>
+        </select>
+      </div>
+
+      <div class="checkbox-group">
+        <label><input type="radio" name="tlacMaterial" value="banner"> Banner</label>
+        <label><input type="radio" name="tlacMaterial" value="plastova-tabula"> Plastová tabuľa</label>
+        <label><input type="radio" name="tlacMaterial" value="polep"> Polep</label>
+        <label><input type="radio" name="tlacMaterial" value="sendvic"> Sendvič</label>
+      </div>
+
+      <textarea name="popis" placeholder="Popis"></textarea>
+      <div class="form-buttons">
+        <button type="button" onclick="submitAdForm()">Odoslať</button>
+        <button type="button" onclick="resetForm('ad-form')" class="resetButton">Reset</button>
+        <button type="button" onclick="goBack()">Späť</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const businessInput = document.getElementById('business-name');
+    const welcomeHeading = document.getElementById('welcome-heading');
+    const menuButtons = document.getElementById('menu-buttons');
+    const introSection = document.getElementById('intro-section');
+
+    window.onload = function () {
+      const userName = localStorage.getItem('userName');
+      welcomeHeading.textContent = userName ? `Vitajte, ${userName}` : 'Vitajte';
+    }
+
+    function confirmBusinessName() {
+      const name = businessInput.value.trim();
+      if (!name) return;
+      localStorage.setItem('businessName', name);
+      document.getElementById('business-ad').textContent = name;
+      introSection.style.display = 'none';
+      menuButtons.style.display = 'flex';
+    }
+
+    function toggleForm(type) {
+      document.getElementById('ad-form').style.display = type === 'ad' ? 'block' : 'none';
+    }
+
+    function resetForm(formId) {
+      const form = document.querySelector(`#${formId} form`);
+      form.reset();
+    }
+
+    function logout() {
+      localStorage.removeItem('userName');
+      window.location.href = 'landing-page.html';
+    }
+
+    function goToDrinky() {
+      const businessName = document.getElementById('business-name').value.trim();
+      if (!businessName) {
+        alert("Zadajte názov prevádzky.");
+        return;
+      }
+      localStorage.setItem('businessName', businessName);
+      window.location.href = "drinky.html";
+    }
+
+    function goBack() {
+      window.location.href = 'main.html';
+    }
+
+    function submitAdForm() {
+      const form = document.querySelector('#ad-form form');
+      const formData = new FormData(form);
+      const data = {};
+
+      formData.forEach((value, key) => {
+        data[key] = value;
+      });
+
+      data.userName = localStorage.getItem('userName') || '-';
+      data.businessName = localStorage.getItem('businessName') || '-';
+      data.formType = 'ad';
+
+      fetch('http://localhost:3000/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(response => {
+          if (response.ok) {
+            alert('Formulár bol úspešne odoslaný!');
+            form.reset();
+          } else {
+            alert('Chyba pri odosielaní.');
+          }
+        })
+        .catch(error => {
+          console.error('Chyba:', error);
+          alert('Chyba pripojenia k serveru.');
+        });
+    }
+
+  </script>
+</body>
+
+</html>
