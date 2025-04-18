@@ -328,7 +328,7 @@
             data.businessName = localStorage.getItem('businessName') || '-';
             data.formType = 'drink';
 
-            fetch('http://127.0.0.1:3000/send', {
+            fetch('https://oz-aplikacia-form.onrender.com/send', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
