@@ -18,11 +18,89 @@
 
         body {
             font-family: Arial, sans-serif;
-            background: #ffffff;
+            background-color: #f4f7fc;
             color: #333;
             padding: 20px;
             max-width: 800px;
             margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            gap: 2vh;
+            align-items: center;
+            box-sizing: border-box;
+
+
+        }
+
+        .headerTop {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin: 10px 0px 30px 0px;
+            width: 100%;
+            max-width: 800px;
+            box-sizing: border-box;
+
+        }
+
+        .drinkForm {
+            background-color: white;
+            padding: 20px;
+            margin-top: 2vh;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .h1Nadpis {
+            width: 80%;
+            text-align: left;
+            font-size: 20px;
+
+
+        }
+
+        .logout_button {
+            background-color: var(--danger);
+            border: none;
+            width: 20%;
+            font-size: 14px;
+            padding-top: 12px;
+            padding-bottom: 12px;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout_button:hover {
+            background-color: var(--danger-dark);
+        }
+
+        .buttons-section {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 20px;
+            width: 100%;
+        }
+
+        #ad-btn,
+        #drink-menu-btn {
+            width: 390px;
+            padding: 2em;
+            cursor: pointer;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        #ad-btn:hover,
+        #drink-menu-btn:hover {
+            background-color: var(--primary-dark);
         }
 
         h1,
@@ -127,13 +205,62 @@
             outline: none;
             box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
         }
+
+        #page-title{
+            font-size: 1.5em;
+        }
+
+        @media (max-width: 460px) {
+            .headerTop {
+                flex-direction: column;
+                align-items: center;
+                width: 60vw;
+            }
+
+            .h1Nadpis {
+                width: 100%;
+                text-align: center;
+            }
+
+            .logout_button {
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            .input-section,
+            .buttons-section,
+            .form-section {
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            #ad-btn,
+            #drink-menu-btn {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 
 <body>
-    <h1 id="page-title"></h1>
-    <h2 id="business-name-heading"></h2>
-    <form id="drink-form">
+    <div class="header">
+        <div class="headerTop">
+            <h1 id="business-name-heading" class="h1Nadpis">Vitajte</h1>
+            <button onclick="logout()" class="logout_button">Odhlásiť</button>
+        </div>
+
+        <div class="buttons-section" id="menu-buttons">
+            <button id="drink-menu-btn" onclick="goToDrinky()">Nápojový lístok</button>
+            <button id="ad-btn" onclick="toggleForm('ad')">Tlačená reklama</button>
+        </div>
+
+        
+    </div>
+   
+    <!-- <h2 id="business-name-heading"></h2> -->
+    <form id="drink-form" class="drinkForm">
+        <h1 id="page-title"></h1>
         <label>Mesto:</label>
         <input type="text" name="mesto" required>
 
@@ -217,6 +344,19 @@
     </form>
 
     <script>
+        function logout() {
+            localStorage.removeItem('userName');
+            window.location.href = 'landing-page.html';
+        }
+
+        function goToDrinky() {
+            window.location.href = "drinky.html";
+        }
+
+        function toggleForm(type) {
+            window.location.href = "main.html#showAdForm";
+        }
+
         const tatrateaData = {
             'TATRATEA 52': ['Shot - 0,04l TATRATEA 52 ', 'Caribik - citron, ľad, tonic', 'Up to you - TATRATEA 52, lad, Icetea, voda', 'Emerson - TATRATEA 52, pomarančový džus, citrón, ľad'],
             'TATRATEA 62': ['Shot', 'Stormi', 'BerryIce', 'Lana', 'Dark'],
