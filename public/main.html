@@ -38,12 +38,16 @@
     .headerTop {
       display: flex;
       flex-direction: row;
+      align-items: center;
       width: 100%;
       max-width: 800px;
     }
 
     .h1Nadpis {
       width: 80%;
+      text-align: left;
+      font-size: 20px;
+      margin-bottom: 0px;
     }
 
     .logout_button {
@@ -283,8 +287,22 @@
 
     window.onload = function () {
       const userName = localStorage.getItem('userName');
+      const businessName = localStorage.getItem('businessName');
+
       welcomeHeading.textContent = userName ? `Vitajte, ${userName}` : 'Vitajte';
-    }
+
+      if (businessName) {
+        businessInput.value = businessName;
+        document.getElementById('business-ad').textContent = businessName;
+        introSection.style.display = 'none';
+        menuButtons.style.display = 'flex';
+
+        // Ak URL obsahuje hash "#showAdForm", rovno zobraz formulár
+        if (window.location.hash === '#showAdForm') {
+          toggleForm('ad');
+        }
+      }
+    };
 
     function confirmBusinessName() {
       const name = businessInput.value.trim();
