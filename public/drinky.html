@@ -122,7 +122,7 @@
         select,
         textarea,
         button {
-            padding: 10px;
+            padding: 12px;
             font-size: 16px;
             border-radius: 5px;
             border: 1px solid #ccc;
@@ -206,8 +206,21 @@
             box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
         }
 
-        #page-title{
+        #page-title {
             font-size: 1.5em;
+        }
+
+        @media (max-width: 600px) {
+            .downButton {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .back-btn,
+            .resetButton,
+            .odoslatButton{
+                width: 100%;
+            }
         }
 
         @media (max-width: 460px) {
@@ -255,9 +268,9 @@
             <button id="ad-btn" onclick="toggleForm('ad')">Tlačená reklama</button>
         </div>
 
-        
+
     </div>
-   
+
     <!-- <h2 id="business-name-heading"></h2> -->
     <form id="drink-form" class="drinkForm">
         <h1 id="page-title"></h1>
@@ -338,7 +351,7 @@
         <div class="downButton">
             <button type="button" class="odoslatButton" onclick="submitForm()">Odoslať</button>
             <button type="button" class="resetButton" onclick="resetForm()">Reset</button>
-            <button type="button" class="back-btn" onclick="goBack()">Späť</button>
+            <button type="button" class="back-btn" onclick="goBack()">Zmena prevádzky</button>
         </div>
 
     </form>
@@ -354,7 +367,7 @@
         }
 
         function toggleForm(type) {
-            window.location.href = "main.html#showAdForm";
+            window.location.href = 'main.html?from=drinky';
         }
 
         const tatrateaData = {
@@ -424,6 +437,9 @@
         }
 
         function goBack() {
+            // window.location.href = 'main.html?from=drinky';
+            // localStorage.removeItem('userName');
+            localStorage.removeItem('businessName');
             window.location.href = 'main.html';
         }
 
@@ -468,7 +484,7 @@
             data.businessName = localStorage.getItem('businessName') || '-';
             data.formType = 'drink';
 
-            fetch('https://oz-aplikacia-form.onrender.com/send', {
+            fetch('http://127.0.0.1:3000/send', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
