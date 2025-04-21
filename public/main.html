@@ -274,7 +274,7 @@
       <div class="form-buttons">
         <button type="button" onclick="submitAdForm()">Odoslať</button>
         <button type="button" onclick="resetForm('ad-form')" class="resetButton">Reset</button>
-        <button type="button" onclick="goBack()">Späť</button>
+        <button type="button" onclick="goBack()">Zmena prevádzky</button>
       </div>
     </form>
   </div>
@@ -288,18 +288,19 @@
     window.onload = function () {
       const userName = localStorage.getItem('userName');
       const businessName = localStorage.getItem('businessName');
+      const from = new URLSearchParams(window.location.search).get('from');
 
-      welcomeHeading.textContent = userName ? `Vitajte, ${userName}` : 'Vitajte';
+      if (userName) {
+        document.getElementById('welcome-heading').textContent = `Vitajte, ${userName}`;
+      }
 
       if (businessName) {
-        businessInput.value = businessName;
         document.getElementById('business-ad').textContent = businessName;
-        introSection.style.display = 'none';
-        menuButtons.style.display = 'flex';
-
-        // Ak URL obsahuje hash "#showAdForm", rovno zobraz formulár
-        if (window.location.hash === '#showAdForm') {
-          toggleForm('ad');
+        // Ak bol presmerovaný späť z drinky.html, zobraz rovno formulár
+        if (from === 'drinky') {
+          document.getElementById('intro-section').style.display = 'none';
+          document.getElementById('menu-buttons').style.display = 'flex';
+          toggleForm('ad'); // zobraz rovno formulár pre tlačenú reklamu
         }
       }
     };
@@ -328,16 +329,12 @@
     }
 
     function goToDrinky() {
-      const businessName = document.getElementById('business-name').value.trim();
-      if (!businessName) {
-        alert("Zadajte názov prevádzky.");
-        return;
-      }
-      localStorage.setItem('businessName', businessName);
-      window.location.href = "drinky.html";
+      window.location.href = 'drinky.html';
     }
 
     function goBack() {
+      // localStorage.removeItem('userName');
+      localStorage.removeItem('businessName');
       window.location.href = 'main.html';
     }
 
@@ -354,7 +351,7 @@
       data.businessName = localStorage.getItem('businessName') || '-';
       data.formType = 'ad';
 
-      fetch('https://oz-aplikacia-form.onrender.com/send', {
+      fetch('http://localhost:3000/send', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
