@@ -71,7 +71,7 @@ app.post('/send', (req, res) => {
 
   // Pridaj drinky pod každú kategóriu
   if (Object.keys(tatrateaGroups).length > 0) {
-    htmlContent += `<h3 style="margin-top: 30px;">Zvolené drinky TATRATEA</h3>`;
+    htmlContent += `<h3 style="margin-top: 30px; color: #007bff;">Zvolené drinky TATRATEA</h3>`;
     for (const category in tatrateaGroups) {
       htmlContent += `<h4 style="margin-bottom: 5px;">${category}</h4><ul>`;
       tatrateaGroups[category].forEach(drink => {
