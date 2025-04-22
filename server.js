@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: 'grafik.karloff@gmail.com',
-    pass: 'dwjnisetnbqiwpzn' // aplikacné heslo z 2FA
+    pass: 'dwjnisetnbqiwpzn' // tvoje aplikacné heslo
   }
 });
 
@@ -25,10 +25,8 @@ app.post('/send', (req, res) => {
   const userName = data.userName || '-';
   const businessName = data.businessName || '-';
 
-  // Odstráň z objektu systémové polia, ktoré už zobrazujeme samostatne
-  const excludedKeys = ['formType', 'userName', 'businessName'];
+  const excludedKeys = ['formType', 'userName', 'businessName', 'drink'];
 
-  // Vytvor HTML výpis
   let htmlContent = `
   <div style="font-family: Arial, sans-serif; color: #333;">
     <h2 style="color: #007bff;">Nový formulár - ${formType}</h2>
@@ -43,25 +41,59 @@ app.post('/send', (req, res) => {
         </tr>
       </thead>
       <tbody>
-`;
+  `;
 
   for (const key in data) {
     if (excludedKeys.includes(key)) continue;
     const value = Array.isArray(data[key]) ? data[key].join(', ') : data[key];
     const formattedKey = key.charAt(0).toUpperCase() + key.slice(1);
     htmlContent += `
-    <tr>
-      <td style="border-bottom: 1px solid #eee;"><strong>${formattedKey}</strong></td>
-      <td style="border-bottom: 1px solid #eee;">${value}</td>
-    </tr>
-  `;
+      <tr>
+        <td style="border-bottom: 1px solid #eee;"><strong>${formattedKey}</strong></td>
+        <td style="border-bottom: 1px solid #eee;">${value}</td>
+      </tr>
+    `;
   }
 
   htmlContent += `
       </tbody>
     </table>
-  </div>
-`;
+  `;
+
+  // Spracovanie TATRATEA drinkov
+  if (data.drink) {
+    const drinkList = Array.isArray(data.drink) ? data.drink : [data.drink];
+    const grouped = {};
+
+    drinkList.forEach(full => {
+      const parts = full.split(' - ');
+      if (parts.length < 2) {
+        grouped['Neznáma kategória'] = grouped['Neznáma kategória'] || [];
+        grouped['Neznáma kategória'].push(full.trim());
+      } else {
+        const [category, drink] = parts;
+        if (!grouped[category.trim()]) {
+          grouped[category.trim()] = [];
+        }
+        grouped[category.trim()].push(drink.trim());
+      }
+    });
+
+    htmlContent += `
+      <h3 style="margin-top: 30px; color: #007bff;">Zvolené drinky TATRATEA</h3>
+    `;
+
+    for (const category in grouped) {
+      htmlContent += `
+        <p style="font-weight: bold; margin: 15px 0 5px 0;">${category}</p>
+        <ul style="margin-left: 25px; padding-left: 10px;">
+          ${grouped[category].map(drink => `<li style="margin-bottom: 5px;">${drink}</li>`).join('')}
+        </ul>
+      `;
+    }
+  }
+
+  htmlContent += `</div>`;
 
   const mailOptions = {
     from: 'grafik.karloff@gmail.com',
