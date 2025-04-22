@@ -377,64 +377,66 @@
         };
 
         function addTatrateaSection() {
-            const section = document.createElement('div');
-            section.classList.add('drink-section');
+    const section = document.createElement('div');
+    section.classList.add('drink-section');
 
-            const select = document.createElement('select');
-            select.innerHTML = `<option disabled selected>Vyber TATRATEA</option>` +
-                Object.keys(tatrateaData).map(k => `<option>${k}</option>`).join('');
-            select.style.width = `50%`;
+    const select = document.createElement('select');
+    select.innerHTML = `<option disabled selected>Vyber TATRATEA</option>` +
+        Object.keys(tatrateaData).map(k => `<option>${k}</option>`).join('');
+    select.style.width = `50%`;
 
-            const removeBtn = document.createElement('button');
-            removeBtn.textContent = 'Odstrániť';
-            removeBtn.type = 'button';
-            removeBtn.style.marginTop = '10px';
-            removeBtn.style.backgroundColor = 'var(--danger)';
-            removeBtn.style.color = 'white';
-            removeBtn.onclick = () => section.remove();
-            section.appendChild(removeBtn);
+    const removeBtn = document.createElement('button');
+    removeBtn.textContent = 'Odstrániť';
+    removeBtn.type = 'button';
+    removeBtn.style.marginTop = '10px';
+    removeBtn.style.backgroundColor = 'var(--danger)';
+    removeBtn.style.color = 'white';
+    removeBtn.onclick = () => section.remove();
+    section.appendChild(removeBtn);
 
-            const drinksDiv = document.createElement('div');
-            drinksDiv.classList.add('drink-options');
+    const drinksDiv = document.createElement('div');
+    drinksDiv.classList.add('drink-options');
 
-            select.addEventListener('change', () => {
-                const selected = select.value;
-                drinksDiv.innerHTML = '';
-                tatrateaData[selected]?.forEach(drink => {
-                    const checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-                    checkbox.style.marginTop = '20px';
-                    checkbox.id = `${selected}-${drink}`;
-                    checkbox.name = 'drink';
-                    checkbox.value = drink;
+    select.addEventListener('change', () => {
+        const selected = select.value;
+        drinksDiv.innerHTML = '';
 
-                    const label = document.createElement('label');
-                    label.textContent = drink;
-                    label.setAttribute('for', checkbox.id);
-                    label.style.fontSize = `14px`;
+        tatrateaData[selected]?.forEach(drink => {
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.style.marginTop = '20px';
+            checkbox.id = `${selected}-${drink}`;
+            checkbox.name = `drink-${selected}`; // 👈 DÔLEŽITÁ ÚPRAVA
+            checkbox.value = drink;
 
-                    const recipe = document.createElement('div');
-                    recipe.textContent = `Receptúra pre ${drink}`;
-                    recipe.style.display = 'none';
-                    recipe.style.marginLeft = '20px';
-                    recipe.style.fontStyle = 'italic';
+            const label = document.createElement('label');
+            label.textContent = drink;
+            label.setAttribute('for', checkbox.id);
+            label.style.fontSize = `14px`;
 
-                    checkbox.addEventListener('change', () => {
-                        recipe.style.display = checkbox.checked ? 'none' : 'none';
-                    });
+            const recipe = document.createElement('div');
+            recipe.textContent = `Receptúra pre ${drink}`;
+            recipe.style.display = 'none';
+            recipe.style.marginLeft = '20px';
+            recipe.style.fontStyle = 'italic';
 
-                    const wrapper = document.createElement('div');
-                    wrapper.appendChild(checkbox);
-                    wrapper.appendChild(label);
-                    wrapper.appendChild(recipe);
-                    drinksDiv.appendChild(wrapper);
-                });
+            checkbox.addEventListener('change', () => {
+                recipe.style.display = checkbox.checked ? 'none' : 'none';
             });
 
-            section.appendChild(select);
-            section.appendChild(drinksDiv);
-            document.getElementById('tatratea-sections').appendChild(section);
-        }
+            const wrapper = document.createElement('div');
+            wrapper.appendChild(checkbox);
+            wrapper.appendChild(label);
+            wrapper.appendChild(recipe);
+            drinksDiv.appendChild(wrapper);
+        });
+    });
+
+        section.appendChild(select);
+        section.appendChild(drinksDiv);
+        document.getElementById('tatratea-sections').appendChild(section);
+    }
+
 
         function goBack() {
             // window.location.href = 'main.html?from=drinky';
