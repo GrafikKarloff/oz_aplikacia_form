@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: 'grafik.karloff@gmail.com',
-    pass: 'dwjnisetnbqiwpzn' // tvoje aplikacné heslo
+    pass: 'dwjnisetnbqiwpzn' // aplikacné heslo
   }
 });
 
@@ -25,7 +25,19 @@ app.post('/send', (req, res) => {
   const userName = data.userName || '-';
   const businessName = data.businessName || '-';
 
-  const excludedKeys = ['formType', 'userName', 'businessName', 'drink'];
+  const excludedKeys = ['formType', 'userName', 'businessName'];
+
+  // TATRATEA drinky podľa typu
+  const tatrateaGroups = {};
+
+  Object.keys(data).forEach(key => {
+    if (key.startsWith('drink-')) {
+      const category = key.replace('drink-', '');
+      const values = Array.isArray(data[key]) ? data[key] : [data[key]];
+      if (!tatrateaGroups[category]) tatrateaGroups[category] = [];
+      tatrateaGroups[category] = tatrateaGroups[category].concat(values);
+    }
+  });
 
   let htmlContent = `
   <div style="font-family: Arial, sans-serif; color: #333;">
@@ -44,7 +56,7 @@ app.post('/send', (req, res) => {
   `;
 
   for (const key in data) {
-    if (excludedKeys.includes(key)) continue;
+    if (excludedKeys.includes(key) || key.startsWith('drink-')) continue;
     const value = Array.isArray(data[key]) ? data[key].join(', ') : data[key];
     const formattedKey = key.charAt(0).toUpperCase() + key.slice(1);
     htmlContent += `
@@ -55,41 +67,17 @@ app.post('/send', (req, res) => {
     `;
   }
 
-  htmlContent += `
-      </tbody>
-    </table>
-  `;
+  htmlContent += `</tbody></table>`;
 
-  // Spracovanie TATRATEA drinkov
-  if (data.drink) {
-    const drinkList = Array.isArray(data.drink) ? data.drink : [data.drink];
-    const grouped = {};
-
-    drinkList.forEach(full => {
-      const parts = full.split(' - ');
-      if (parts.length < 2) {
-        grouped['Neznáma kategória'] = grouped['Neznáma kategória'] || [];
-        grouped['Neznáma kategória'].push(full.trim());
-      } else {
-        const [category, drink] = parts;
-        if (!grouped[category.trim()]) {
-          grouped[category.trim()] = [];
-        }
-        grouped[category.trim()].push(drink.trim());
-      }
-    });
-
-    htmlContent += `
-      <h3 style="margin-top: 30px; color: #007bff;">Zvolené drinky TATRATEA</h3>
-    `;
-
-    for (const category in grouped) {
-      htmlContent += `
-        <p style="font-weight: bold; margin: 15px 0 5px 0;">${category}</p>
-        <ul style="margin-left: 25px; padding-left: 10px;">
-          ${grouped[category].map(drink => `<li style="margin-bottom: 5px;">${drink}</li>`).join('')}
-        </ul>
-      `;
+  // Pridaj drinky pod každú kategóriu
+  if (Object.keys(tatrateaGroups).length > 0) {
+    htmlContent += `<h3 style="margin-top: 30px;">Zvolené drinky TATRATEA</h3>`;
+    for (const category in tatrateaGroups) {
+      htmlContent += `<h4 style="margin-bottom: 5px;">${category}</h4><ul>`;
+      tatrateaGroups[category].forEach(drink => {
+        htmlContent += `<li>${drink}</li>`;
+      });
+      htmlContent += `</ul>`;
     }
   }
 
