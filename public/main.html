@@ -194,11 +194,6 @@
       background-color: var(--reset-dark);
     }
 
-    textarea {
-      resize: none;
-      height: 15vh;
-    }
-
     @media (max-width: 600px) {
       .form-buttons {
         flex-direction: column;
@@ -276,6 +271,11 @@
       </div>
 
       <textarea name="popis" placeholder="Popis"></textarea>
+
+      <label>Priložte fotky (voliteľné):</label>
+      <input type="file" name="photos" multiple accept="image/*">
+
+
       <div class="form-buttons">
         <button type="button" onclick="submitAdForm()">Odoslať</button>
         <button type="button" onclick="resetForm('ad-form')" class="resetButton">Reset</button>
@@ -346,22 +346,14 @@
     function submitAdForm() {
       const form = document.querySelector('#ad-form form');
       const formData = new FormData(form);
-      const data = {};
 
-      formData.forEach((value, key) => {
-        data[key] = value;
-      });
-
-      data.userName = localStorage.getItem('userName') || '-';
-      data.businessName = localStorage.getItem('businessName') || '-';
-      data.formType = 'ad';
+      formData.append('userName', localStorage.getItem('userName') || '-');
+      formData.append('businessName', localStorage.getItem('businessName') || '-');
+      formData.append('formType', 'ad');
 
       fetch('https://oz-aplikacia-form.onrender.com/send', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
+        body: formData
       })
         .then(response => {
           if (response.ok) {
