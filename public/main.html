@@ -351,7 +351,7 @@
       formData.append('businessName', localStorage.getItem('businessName') || '-');
       formData.append('formType', 'ad');
 
-      fetch('https://oz-aplikacia-form.onrender.com/send', {
+      fetch('http://127.0.0.1:3000/send', {
         method: 'POST',
         body: formData
       })
