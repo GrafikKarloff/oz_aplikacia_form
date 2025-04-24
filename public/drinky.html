@@ -210,10 +210,6 @@
             font-size: 1.5em;
         }
 
-        textarea {
-            resize: none;
-        }
-
         @media (max-width: 600px) {
             .downButton {
                 flex-direction: column;
@@ -222,7 +218,7 @@
 
             .back-btn,
             .resetButton,
-            .odoslatButton{
+            .odoslatButton {
                 width: 100%;
             }
         }
@@ -352,6 +348,12 @@
         </div>
 
         <button type="button" onclick="addTatrateaSection()" class="addTatrateaButton">Pridať TATRATEA</button>
+
+        <!-- Vlož do formulára -->
+        <label>Priložte fotky (voliteľné):</label>
+        <input type="file" name="photos" multiple accept="image/*">
+
+
         <div class="downButton">
             <button type="button" class="odoslatButton" onclick="submitForm()">Odoslať</button>
             <button type="button" class="resetButton" onclick="resetForm()">Reset</button>
@@ -381,66 +383,64 @@
         };
 
         function addTatrateaSection() {
-    const section = document.createElement('div');
-    section.classList.add('drink-section');
+            const section = document.createElement('div');
+            section.classList.add('drink-section');
 
-    const select = document.createElement('select');
-    select.innerHTML = `<option disabled selected>Vyber TATRATEA</option>` +
-        Object.keys(tatrateaData).map(k => `<option>${k}</option>`).join('');
-    select.style.width = `50%`;
+            const select = document.createElement('select');
+            select.innerHTML = `<option disabled selected>Vyber TATRATEA</option>` +
+                Object.keys(tatrateaData).map(k => `<option>${k}</option>`).join('');
+            select.style.width = `50%`;
 
-    const removeBtn = document.createElement('button');
-    removeBtn.textContent = 'Odstrániť';
-    removeBtn.type = 'button';
-    removeBtn.style.marginTop = '10px';
-    removeBtn.style.backgroundColor = 'var(--danger)';
-    removeBtn.style.color = 'white';
-    removeBtn.onclick = () => section.remove();
-    section.appendChild(removeBtn);
+            const removeBtn = document.createElement('button');
+            removeBtn.textContent = 'Odstrániť';
+            removeBtn.type = 'button';
+            removeBtn.style.marginTop = '10px';
+            removeBtn.style.backgroundColor = 'var(--danger)';
+            removeBtn.style.color = 'white';
+            removeBtn.onclick = () => section.remove();
+            section.appendChild(removeBtn);
 
-    const drinksDiv = document.createElement('div');
-    drinksDiv.classList.add('drink-options');
+            const drinksDiv = document.createElement('div');
+            drinksDiv.classList.add('drink-options');
 
-    select.addEventListener('change', () => {
-        const selected = select.value;
-        drinksDiv.innerHTML = '';
+            select.addEventListener('change', () => {
+                const selected = select.value;
+                drinksDiv.innerHTML = '';
+                tatrateaData[selected]?.forEach(drink => {
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.style.marginTop = '20px';
+                    checkbox.id = `${selected}-${drink}`;
+                    checkbox.name = `drink-${selected}`;
+                    checkbox.value = drink;
 
-        tatrateaData[selected]?.forEach(drink => {
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.style.marginTop = '20px';
-            checkbox.id = `${selected}-${drink}`;
-            checkbox.name = `drink-${selected}`; // 👈 DÔLEŽITÁ ÚPRAVA
-            checkbox.value = drink;
+                    const label = document.createElement('label');
+                    label.textContent = drink;
+                    label.setAttribute('for', checkbox.id);
+                    label.style.fontSize = `14px`;
 
-            const label = document.createElement('label');
-            label.textContent = drink;
-            label.setAttribute('for', checkbox.id);
-            label.style.fontSize = `14px`;
+                    const recipe = document.createElement('div');
+                    recipe.textContent = `Receptúra pre ${drink}`;
+                    recipe.style.display = 'none';
+                    recipe.style.marginLeft = '20px';
+                    recipe.style.fontStyle = 'italic';
 
-            const recipe = document.createElement('div');
-            recipe.textContent = `Receptúra pre ${drink}`;
-            recipe.style.display = 'none';
-            recipe.style.marginLeft = '20px';
-            recipe.style.fontStyle = 'italic';
+                    checkbox.addEventListener('change', () => {
+                        recipe.style.display = checkbox.checked ? 'none' : 'none';
+                    });
 
-            checkbox.addEventListener('change', () => {
-                recipe.style.display = checkbox.checked ? 'none' : 'none';
+                    const wrapper = document.createElement('div');
+                    wrapper.appendChild(checkbox);
+                    wrapper.appendChild(label);
+                    wrapper.appendChild(recipe);
+                    drinksDiv.appendChild(wrapper);
+                });
             });
 
-            const wrapper = document.createElement('div');
-            wrapper.appendChild(checkbox);
-            wrapper.appendChild(label);
-            wrapper.appendChild(recipe);
-            drinksDiv.appendChild(wrapper);
-        });
-    });
-
-        section.appendChild(select);
-        section.appendChild(drinksDiv);
-        document.getElementById('tatratea-sections').appendChild(section);
-    }
-
+            section.appendChild(select);
+            section.appendChild(drinksDiv);
+            document.getElementById('tatratea-sections').appendChild(section);
+        }
 
         function goBack() {
             // window.location.href = 'main.html?from=drinky';
@@ -473,29 +473,13 @@
             const form = document.getElementById('drink-form');
             const formData = new FormData(form);
 
-            const data = {};
-            formData.forEach((value, key) => {
-                // Ak už kľúč existuje (napr. viaceré checkboxy), vlož ako pole
-                if (data[key]) {
-                    if (!Array.isArray(data[key])) {
-                        data[key] = [data[key]];
-                    }
-                    data[key].push(value);
-                } else {
-                    data[key] = value;
-                }
-            });
-
-            data.userName = localStorage.getItem('userName') || '-';
-            data.businessName = localStorage.getItem('businessName') || '-';
-            data.formType = 'drink';
+            formData.append('userName', localStorage.getItem('userName') || '-');
+            formData.append('businessName', localStorage.getItem('businessName') || '-');
+            formData.append('formType', 'drink');
 
             fetch('https://oz-aplikacia-form.onrender.com/send', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
+                body: formData
             })
                 .then(response => {
                     if (response.ok) {
