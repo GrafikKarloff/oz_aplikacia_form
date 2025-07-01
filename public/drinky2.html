@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+
+<html lang="sk">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Formular Grafici</title>
+    <link
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%9D%3C/text%3E%3C/svg%3E"
+        rel="icon" />
+    <style>
+        :root {
+            --primary: #007bff;
+            --primary-dark: #0056b3;
+            --danger: #ff7272;
+            --danger-dark: #e33131;
+            --light-bg: #f4f7fa;
+            --reset: #fd943e;
+            --reset-dark: #ffb172;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fc;
+            color: #333;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            gap: 2vh;
+            align-items: center;
+            box-sizing: border-box;
+
+
+        }
+
+        .headerTop {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin: 10px 0px 30px 0px;
+            width: 100%;
+            max-width: 800px;
+            box-sizing: border-box;
+
+        }
+
+        .drinkForm {
+            background-color: white;
+            padding: 20px;
+            margin-top: 2vh;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .h1Nadpis {
+            width: 80%;
+            text-align: left;
+            font-size: 20px;
+
+
+        }
+
+        .logout_button {
+            background-color: var(--danger);
+            border: none;
+            width: 20%;
+            font-size: 14px;
+            padding-top: 12px;
+            padding-bottom: 12px;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout_button:hover {
+            background-color: var(--danger-dark);
+        }
+
+        .buttons-section {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 20px;
+            width: 100%;
+        }
+
+        #ad-btn,
+        #drink-menu-btn {
+            width: 390px;
+            padding: 2em;
+            cursor: pointer;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        #ad-btn:hover,
+        #drink-menu-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8vh;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input,
+        select,
+        textarea,
+        button {
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .sirkaVyska,
+        .skupina1,
+        .downButton {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 2%;
+        }
+
+        .sirkaVyska input {
+            width: 48%;
+        }
+
+        .skupina1 select {
+            width: 40%;
+        }
+
+        .skupina1 {
+            margin-top: 1vh;
+            margin-bottom: 1vh;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .drink-options {
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+
+        .drink-section {
+            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .back-btn,
+        .resetButton,
+        .odoslatButton {
+            margin-top: 20px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            width: 48%;
+        }
+
+        .back-btn:hover,
+        .odoslatButton:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .resetButton {
+            background-color: var(--reset);
+        }
+
+        .resetButton:hover {
+            background-color: var(--reset-dark);
+        }
+
+        .addTatrateaButton {
+            background-color: rgb(141, 141, 141);
+            color: white;
+            cursor: pointer;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+        }
+
+        #page-title {
+            font-size: 1.5em;
+        }
+
+        @media (max-width: 600px) {
+            .downButton {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .back-btn,
+            .resetButton,
+            .odoslatButton {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 460px) {
+            .headerTop {
+                flex-direction: column;
+                align-items: center;
+                width: 60vw;
+            }
+
+            .h1Nadpis {
+                width: 100%;
+                text-align: center;
+            }
+
+            .logout_button {
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            .input-section,
+            .buttons-section,
+            .form-section {
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            #ad-btn,
+            #drink-menu-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="headerTop">
+            <h1 class="h1Nadpis" id="business-name-heading">Vitajte</h1>
+            <button class="logout_button" onclick="logout()">Odhlásiť</button>
+        </div>
+        <div class="buttons-section" id="menu-buttons">
+            <button id="drink-menu-btn" onclick="goToDrinky()">Nápojový lístok</button>
+            <button id="ad-btn" onclick="toggleForm('ad')">Tlačená reklama</button>
+        </div>
+    </div>
+    <!-- <h2 id="business-name-heading"></h2> -->
+    <form class="drinkForm" id="drink-form">
+        <h1 id="page-title"></h1>
+        <label>Mesto:</label>
+        <input name="mesto" required="" type="text" />
+        <label>Rozmery:</label>
+        <div class="sirkaVyska">
+            <input name="sirka" placeholder="Šírka" type="number" />
+            <input name="vyska" placeholder="Výška" type="number" />
+        </div>
+        <label>Číslo šablóny:</label>
+        <input name="cislo_sablony" type="number" />
+        <label>Formát:</label>
+        <select name="format">
+            <option disabled="" selected="">Zvoliť</option>
+            <option>A4</option>
+            <option>A5</option>
+            <option>A4 2x Biga</option>
+            <option>NL Genericky</option>
+            <option>A4-Biga</option>
+            <option>1/2 A4 na výšku</option>
+        </select>
+        <div class="skupina1">
+            <label>Pozadie:</label>
+            <select name="pozadie">
+                <option disabled="" selected="">Zvoliť</option>
+                <option>Čierne</option>
+                <option>Biele</option>
+            </select>
+            <label>Materiál:</label>
+            <select name="material">
+                <option disabled="" selected="">Zvoliť</option>
+                <option>Papier</option>
+                <option>Polyart tenký</option>
+                <option>Polyart hrubý</option>
+            </select>
+        </div>
+        <label>Počet kusov:</label>
+        <input name="pocet_kusov" type="number" />
+        <label>Tlač:</label>
+        <select name="tlac">
+            <option disabled="" selected="">Zvoliť</option>
+            <option>Jednostranná</option>
+            <option>Obojstranná</option>
+        </select>
+        <label>Väzba:</label>
+        <select name="vazba">
+            <option disabled="" selected="">Zvoliť</option>
+            <option>Kovová</option>
+            <option>Plastová</option>
+        </select>
+        <label>Štýl:</label>
+        <select name="styl">
+            <option disabled="" selected="">Zvoliť</option>
+            <option>Zátišie</option>
+            <option>Kreslené</option>
+            <option>Čisté</option>
+            <option>Ibatext</option>
+        </select>
+        <label>Poznámky:</label>
+        <textarea name="poznamky" placeholder="Všetky ostatné požiadavky..."></textarea>
+        <div id="tatratea-sections">
+            <!-- dynamické bloky TATRATEA sa vkladajú sem -->
+        </div>
+        <button class="addTatrateaButton" onclick="addTatrateaSection()" type="button">Pridať TATRATEA</button>
+        <!-- Vlož do formulára -->
+        <label>Priložte fotky (voliteľné):</label>
+        <input accept="image/*" multiple="" name="photos" type="file" />
+        <div class="downButton">
+            <button class="odoslatButton" onclick="submitForm()" type="button">Odoslať</button>
+            <button class="resetButton" onclick="resetForm()" type="button">Reset</button>
+            <button class="back-btn" onclick="goBack()" type="button">Zmena prevádzky</button>
+        </div>
+        <div id="form-status"
+            style="display: none; margin-top: 20px; padding: 12px; border-radius: 8px; text-align: center; font-weight: 500;">
+        </div>
+    </form>
+    <script>
+        function logout() {
+            localStorage.removeItem('userName');
+            window.location.href = 'landing-page.html';
+        }
+
+        function goToDrinky() {
+            window.location.href = "drinky.html";
+        }
+
+        function toggleForm(type) {
+            window.location.href = 'main.html?from=drinky';
+        }
+
+        const tatrateaData = {
+
+            'TATRATEA 22 Coconut': [
+                'Shot - 0,04l TATRATEA 22',
+                'Sunset - 40ml TATRATEA 22, 200ml ananásový džús, citrónová šťava, ľad',
+                'Daybreak - 40ml TATRATEA 22, 200ml zázvorový tonic, citrónová šťava, ľad',
+                'Sparrow - 40ml TATRATEA 22, 200ml biela Vinea, citrónová šťava, ľad',
+                'Jolly - 40ml TATRATEA 22, 10ml ananásový sirup, 50ml spenená instantná káva, 100ml mlieko, tad',
+                'Sailor`s Wife - 40ml TATRATEA 22, 40ml smotana na šľahanie, 30ml ananásové pyré, 15ml mandlový sirup, ľad',
+                'Fever Dream - 40ml TATRATEA 22, 200ml sóda, 20ml marakujový sirup, citrónová šťava, ľad',
+                'Coco Loco - 40ml TATRATEA 22, 15ml vanilkový sirup, 100ml ananásový džús, citrónová šťava, ľad',
+                'Tatra Bay - 50ml TATRATEA 22, 20ml tmavý rum, 40ml ananásové pyré, 30ml pomarančový džús, ľad',
+                'Tonitea - 40ml TATRATEA 22, 200ml tonic, citrónová šťava, ľad',
+                'Kiss - 40ml TATRATEA 22, 200ml Sprite / 7UP, citrónová šťava, ľad',
+                'Limbo - 40ml TATRATEA 22, 10ml vanilkový sirup, 250ml Red Bull Tropical, ľad',
+                'Summer Ray - 30ml TATRATEA 22, 30ml Amaretto, 30ml pomarančový džús, 30ml citrónová sóda, ľad',
+                'Tatranské medvedie mlieko - 20ml TATRATEA 22, 20ml TATRATEA 52, 15ml sirup s príchuťou Perníkové korenie, 150ml horúce spenené mlieko',
+                'Teapresso - 20ml TATRATEA 22, espresso',
+                'Tatra Latte - 20ml TATRATEA 22, caffe latte',
+                'Tatraccino - 20ml TATRATEA 22, cappuccino, cukor',
+                'Choconut - 20ml TATRATEA 22, horúca čokoláda'
+            ],
+
+            'TATRATEA 32 Citrus': [
+                'Shot - 0,04l TATRATEA 32',
+                'Tatco - 40ml TATRATEA 32, 200ml cola, citrónová šťava, ľad',
+                'Jenny - 40ml TATRATEA 32, 200ml biela Vinea, citrónová šťava, ľad',
+                'Nicholas - 40ml TATRATEA 32, 200ml jablkový džús, 1 lyžica medu, citrónová šťava, ľad',
+                'Orients - 40ml TATRATEA 32, 200ml zelený ľadový čaj, citrónová šťava, ľad',
+                'Spring Rain - 40ml TATRATEA 32, 15ml uhorkový sirup, 200ml sóda, ľad',
+                'Citrus Fizz - 40ml TATRATEA 32, 200ml tonic, citrónová šťava, ľad',
+                'Hector - 40ml TATRATEA 32, 15ml jablkový sirup, 200ml sóda, ľad',
+                'Summer Tea - 40ml TATRATEA 32, 200ml sóda, 2 čl trstinový cukor, mäta, limetka, citrón, citrónová šťava, ľad',
+                'No Worry - 40ml TATRATEA 32, 250ml Red Bull Watermelon, citrónová šťava, ľad',
+                'Energy - 40ml TATRATEA 32, 250ml Red Bull Original, citrónová šťava, ľad',
+                'Robin - 40ml TATRATEA 32, 20ml bazový sirup, 200ml zázvorový tonic, citrónová šťava, ľad',
+                'Forestberg - 40ml TATRATEA 32, 200ml sóda, zmes lesného ovocia (maliny, čučoriedky, černice, jahody), 4 plátky uhorky, ľad',
+                'Astrid - 40ml TATRATEA 32, 200ml hruškový džús, citrónová šťava, ľad',
+                'Garden Spritz - 40ml TATRATEA 32, 20ml bazový sirup, 100ml sóda citrónová tráva, 100ml prosecco, limetková šťava, ľad',
+                'Bali - 40ml TATRATEA 32, 100ml ananásový džús, 1 čl matcha, ľad',
+                'Remi - 40ml TATRATEA 32, 40ml Monin Kiwi / 1 celé kiwi, 200ml ananásový džús, 20ml limetková šťava, ľad',
+                'Hot Citrus - 40ml TATRATEA 32, 200ml horúci čierny čaj, cukor',
+                'Lotta - 40ml TATRATEA 32, 200ml horúci pomarančový džús'
+            ],
+
+            'TATRATEA 42 Peach': [
+                'Shot - 0,04l TATRATEA 42',
+                'Amadeus - 40ml TATRATEA 42, 200ml ananásový džús, citrónová šťava, ľad',
+                'Bella - 40ml TATRATEA 42, 200ml broskyňový džús, citrónová šťava, ľad',
+                'Tea Ice Tea - 40ml TATRATEA 42, 200ml broskyňový ľadový čaj, citrónová šťava, ľad',
+                'Orfeus - 40ml TATRATEA 42, 200ml zázvorový tonic, citrónová šťava, ľad',
+                'Dante - 40ml TATRATEA 42, 100ml mandarínkový džús, 50ml zázvorové pivo, citrónová šťava, ľad',
+                'Salvador - 40ml TATRATEA 42, 15ml javorový sirup, 40ml marhulový džús, 150ml Fanta, ľad',
+                'Bruno - 40ml TATRATEA 42, 200ml zázvorové pivo, citrónová šťava, ľad',
+                'Tessa - 40ml TATRATEA 42, 200ml zelený ľadový čaj, citrónová šťava, ľad',
+                'Nella - 40ml TATRATEA 42, 200ml jahodový ľadový čaj, citrónová šťava, ľad',
+                'Ahoy! - 40ml TATRATEA 42, 200ml Sprite / 7UP, citrónová šťava, ľad',
+                'Penny - 40ml TATRATEA 42, 20ml jahodový sirup, 200ml prosecco, citrónová šťava, ľad',
+                'Vesper - 40ml TATRATEA 42, 200ml prosecco, limetková šťava, ľad',
+                'Michelangelo - 40ml TATRATEA 42, 20ml marakujový sirup, 200ml tonic, citrónová šťava, ľad',
+                'Granny`s Garden - 40ml TATRATEA 42, 40ml hruškové pyré MONIN, 40ml mušt z červeného vína, ľad',
+                'Pink Freeze - 40ml TATRATEA 42, 40ml hroznová šťava, 1 čl marhuľový džem, 150ml sóda citrónová tráva, ľad',
+                'Illusion - 40ml TATRATEA 42, 150ml Red Bull Original, 30ml pomarančový džús, ľad',
+                'Honeymoon - 40ml TATRATEA 42, 100ml horúce biele víno, 100ml horúca voda, cukor, škorica, klinčeky',
+                'Costa Rica - 40ml TATRATEA 42, 200ml horúci ananásový džús',
+                'February - 40ml TATRATEA 42, 20ml javorový sirup, 150ml horúci pomarančový džús',
+                'White Lady - 40ml TATRATEA 42, 100ml horúce biele víno, 100ml horúci pomarančový džús',
+                'Gabi - 40ml TATRATEA 42, 200ml horúci čierny čaj, škorica'
+            ],
+
+            'TATRATEA 52 Original': [
+                'Shot - 0,04l TATRATEA 52',
+                'Caribik - 40ml TATRATEA 52, 200ml ananásový džús, citrónová šťava, ľad',
+                'Emerson - 40ml TATRATEA 52, 20ml mandľový sirup, 100ml jablkový džús, 100ml sóda, citrónová šťava, ľad',
+                'Up to you - 40ml TATRATEA 52, 200ml jablkový džús, citrónová šťava, ľad',
+                'Tea Spritz - 40ml TATRATEA 52, 20ml marakujový sirup, 100ml sóda, 100ml prosecco, citrónová šťava, ľad',
+                'Denver - 40ml TATRATEA 52, 20ml bazový sirup, 200ml zelený ľadový čaj, citrónová šťava, ľad',
+                'Layla - 40ml TATRATEA 52, 20ml bazový sirup, 200ml tonic, citrónová šťava, ľad',
+                'Jungle - 40ml TATRATEA 52, 200ml Sprite / 7UP, citrónová šťava, ľad',
+                'Sharp - 40ml TATRATEA 52, 200ml tonic, citrónová šťava, ľad',
+                'No Limit - 40ml TATRATEA 52, 20ml bazový sirup, 200ml Birell Pomelo & Grep, citrónová šťava, ľad',
+                'Vista - 40ml TATRATEA 52, 200ml Birell Pomelo & Grep, citrónová šťava, ľad',
+                'Sebastian - 40ml TATRATEA 52, 200ml zelený ľadový čaj, citrónová šťava, ľad',
+                'Skyscraper - 40ml TATRATEA 52, 20ml medový sirup, 150ml tonic, citrónová šťava, ľad',
+                'Friday - 40ml TATRATEA 52, 20ml bazový sirup, 100ml tonic, 100ml pomarančový džús, citrónová šťava, ľad',
+                'Wolfie - 40ml TATRATEA 52, 200ml cola, citrónová šťava, ľad',
+                'Crown - 40ml TATRATEA 52, 20ml cherry vermouth, 20ml rosso vermouth, 100ml sóda, citrónová šťava, ľad',
+                'Punch Story - 40ml TATRATEA 52, 20ml cukrový sirup, 100ml jablkový džús, 100ml horúci zázvorový čaj, citrónová šťava',
+                'Black - 40ml TATRATEA 52, 200ml horúci čierny čaj, cukor / med',
+                'Excellent - 40ml TATRATEA 52, 200ml horúci jablkový džús',
+                'Original - 40ml TATRATEA 52, 200ml horúca voda, cukor / med',
+                'Tatranské medvedie mlieko - 20ml TATRATEA 52, 20ml TATRATEA 22, 15ml sirup s príchuťou Perníkové korenie, 150ml horúce spenené mlieko',
+                'Mayers - 20ml TATRATEA 52, 200ml horúci zázvorový čaj, cukor / med'
+            ],
+
+            'TATRATEA 35 Light': [
+                'Teato - 40ml TATRATEA 35, 200ml tonic, citrónová šťava, citrón, ľad',
+                'Tio - 40ml TATRATEA 35, 20ml zázvorový tonic, 150ml tonic, citrónová šťava, citrón, ľad',
+                'Lila - 40ml TATRATEA 35, 20ml jablkový džús, citrónová šťava, citrón, ľad',
+            ],
+
+            'TATRATEA 62 Forest Fruit': [
+                'Shot - 0,04l TATRATEA 62',
+                'Berry Ice - 40ml TATRATEA 62, 200ml ribezlový džús, citrónová šťava, ľad',
+                'Lana - 40ml TATRATEA 62, 200ml brusnicový džús, citrónová šťava, ľad',
+                'Stormi - 40ml TATRATEA 62, 200ml červená Vinea, citrónová šťava, ľad',
+                'Forest Spritz - 40ml TATRATEA 62, 100ml brusnicová šťava / džús, 50ml prosecco, ľad',
+                'Don`t Stop the Partea - 40ml TATRATEA 62, 100ml brusnicový džús, 100ml zázvorové pivo, citrónová šťava, ľad',
+                'Positivitea - 40ml TATRATEA 62, 40ml hroznový džús, 150ml červená Vinea, citrónová šťava, ľad',
+                'Dark - 40ml TATRATEA 62, 200ml cola, citrónová šťava, ľad',
+                'Pearfect - 40ml TATRATEA 62, 20ml hruškové pyré, 100ml cola, citrónová šťava, ľad',
+                'September - 40ml TATRATEA 62, 200ml sóda, 20ml jahodový sirup, citrónová šťava, ľad',
+                'Red Berry - 40ml TATRATEA 62, 200ml horúci ribezlový džús',
+                'Lady - 40ml TATRATEA 62, 200ml horúci jablkový džús',
+                'Moon - 40ml TATRATEA 62, 200ml horúci pomarančový džús',
+                'Violet - 40ml TATRATEA 62, 20ml ovocný sirup, 200ml horúca voda, škorica',
+                'After - 40ml TATRATEA 62, 200ml horúca voda, cukor / med',
+                'Forestea - 40ml TATRATEA 62, 200ml horúci ovocný čaj, cukor / med',
+                'Astoria - 40ml TATRATEA 62, 15ml citrónový sirup, 200ml horúci malinový čaj, cukor / med'
+            ],
+
+            'TATRATEA 72 Outlaw': [
+                'Shot - 0,04l TATRATEA 72',
+                'Paris - 40ml TATRATEA 72, 200ml cola, citrónová šťava, ľad',
+                'Everest - 40ml TATRATEA 72, 200ml Sprite / 7UP, citrónová šťava, ľad',
+                'Power - 40ml TATRATEA 72, 200ml tonic, citrónová šťava, ľad',
+                'Golden - 40ml TATRATEA 72, 200ml zázvorový tonic, citrónová šťava, ľad',
+                'Tea Up - 40ml TATRATEA 72, 200ml zelený ľadový čaj, citrónová šťava, ľad',
+                'Berlin - 40ml TATRATEA 72, 200ml jablkový džús, citrónová šťava, ľad',
+                'Ginger - 40ml TATRATEA 72, 200ml horúci zázvorový čaj, cukor / med',
+                'Helsinki - 40ml TATRATEA 72, 200ml horúci bylinkový čaj, cukor / med',
+                'Foxy - 40ml TATRATEA 72, 200ml horúci jablkový džús',
+                'Rock - 40ml TATRATEA 72, 200ml horúci hruškový džús',
+                'Oslo - 40ml TATRATEA 72, 200ml horúca voda, cukor / med, škorica'
+            ],
+
+            'TATRATEA 17 Milk & Tea': [
+                'Shot - 0,04l TATRATEA 17',
+                'B-Choc - 40ml TATRATEA 17, 80ml horúce mlieko, 20ml roztopená čokoláda',
+                'Silk - 40ml TATRATEA 17, caffe latte, cukor',
+                'Small & Strong - 40ml TATRATEA 17, espresso',
+                'Gingerbread - 40ml TATRATEA 17, 15ml espresso, 100ml horúce spenené mlieko, 15ml sirup s príchuťou Perníkové korenie'
+            ],
+
+            'TATRATEA 27 Aronia & Black Currant': [
+                'Shot - 0,04l TATRATEA 27',
+                'Funky - 40ml TATRATEA 27, 200ml zázvorový tonic, citrónová šťava, ľad',
+                'Amazon - 40ml TATRATEA 27, 200ml biela Vinea, limetková šťava, ľad',
+                'Mini - 40ml TATRATEA 27, 15ml levandulový sirup, 100ml sóda, 100ml prosecco, ľad',
+                'Colors - 40ml TATRATEA 27, 200ml červená Vinea, citrónová šťava, ľad',
+                'Ruby - 40ml TATRATEA 27, 100ml brusnicový džús, 100ml sóda, citrónová šťava, ľad',
+                'Madam - 40ml TATRATEA 27, 20ml ovocný sirup, 200ml sóda, citrónová šťava, ľad',
+                'Rossi - 40ml TATRATEA 27, 200ml ružový tonic, citrónová šťava, ľad',
+                'Focus - 40ml TATRATEA 27, 200ml sóda, limetková šťava, ľad',
+                'Luck - 40ml TATRATEA 27, 200ml horúci ovocný čaj, cukor / med',
+                'Red Velvet - 40ml TATRATEA 27, 200ml horúci brusnicový džús, cukor / med',
+                'Ava - 40ml TATRATEA 27, 200ml horúci ribezlový džús, cukor / med'
+            ],
+
+            'TATRATEA 37 Hibiscus & Red tea': [
+                'Shot - 0,04l TATRATEA 37',
+                'Lauren - 40ml TATRATEA 37, 200ml Sprite / 7UP, citrónová šťava, ľad',
+                'Dolly - 40ml TATRATEA 37, 200ml ružový tonic, 20ml jahodový sirup, citrónová šťava, ľad',
+                'No Love - 40ml TATRATEA 37, 200ml ružový tonic, citrónová šťava, ľad',
+                'Rachel - 40ml TATRATEA 37, 20ml jahodový sirup, 200ml tonic, citrónová šťava, ľad',
+                'Red - 40ml TATRATEA 37, 200ml tonic, citrónová šťava, ľad',
+                'Athena - 40ml TATRATEA 37, 200ml červená Vinea, citrónová šťava, ľad',
+                'Treat - 40ml TATRATEA 37, 200ml biela Vinea, citrónová šťava, ľad',
+                'Limits - 40ml TATRATEA 37, 10ml jahodový sirup, 100ml prosecco, 100ml sóda, ľad',
+                'Oblivion - 40ml TATRATEA 37, 20ml jahodový sirup, 200ml sóda, ľad',
+                'Vera - 40ml TATRATEA 37, 100ml jahodový džús, 100ml sóda, ľad',
+                'Ruby - 40ml TATRATEA 37, 200ml broskyňový ľadový čaj, citrónová šťava, ľad',
+                'Valencia - 40ml TATRATEA 37, 200ml ribezlový džús, ľad',
+                'Sexy Spritz - 40ml TATRATEA 37, 50ml rooibos tonic, 20ml pyré z lesného ovocia, ľad',
+                'Witch Spell - 40ml TATRATEA 37, 200ml Red Bull Pear Cinnamon, 10ml mandlový sirup, ľad',
+                'Gaga - 40ml TATRATEA 37, 20ml jahodový sirup, 100ml prosecco, 100ml ružové víno, citrónová šťava',
+                'Sweet - 40ml TATRATEA 37, 100ml horúca voda, 100ml horúce červené víno, cukor, škorica, klinčeky',
+                'Warm Hug - 40ml TATRATEA 37, 20ml ovocný sirup, 200ml horúca voda',
+                'Valery - 40ml TATRATEA 37, 200ml horúci ribezlový džús',
+                'Tatra Punch - 40ml TATRATEA 37, 100ml horúce červené víno, 100ml horúci čierny čaj, vianočné korenie, cukor'
+            ],
+
+            'TATRATEA 47 Flower': [
+                'Shot - 0,04l TATRATEA 47',
+                'Flowerton - 40ml TATRATEA 47, 200ml tonic, citrónová šťava, ľad',
+                'Hurricane - 40ml TATRATEA 47, 20ml marakujový sirup, 200ml tonic, citrónová šťava, ľad',
+                'Flori - 40ml TATRATEA 47, 20ml bazový sirup, 200ml tonic, citrónová šťava, ľad',
+                'Lucy - 40ml TATRATEA 47, 20ml marakujový sirup, 100ml prosecco, 100ml sóda, citrónová šťava, ľad',
+                'Vivien - 40ml TATRATEA 47, 20ml medový sirup, 75ml prosecco, 75ml sóda, limetková šťava, ľad',
+                'Flowermail - 40ml TATRATEA 47, 20ml bazový sirup, 100ml prosecco, 100ml sóda, citrónová šťava, mäta, ľad',
+                'Erin - 40ml TATRATEA 47, 200ml jablkový cider, citrónová šťava, ľad',
+                'Daisy - 40ml TATRATEA 47, 20ml bazový sirup, 200ml sóda, citrónová šťava, citrón, limetka, mäta, ľad',
+                'Luna - 40ml TATRATEA 47, 200ml biela Vinea, citrónová šťava, ľad',
+                'Sandy - 40ml TATRATEA 47, 200ml červená Vinea, citrónová šťava, ľad',
+                'Holden - 40ml TATRATEA 47, 200ml Sprite / 7UP, citrónová šťava, ľad',
+                'Architect - 40ml TATRATEA 47, 20ml vanilkový sirup, 200ml ľadový čaj, limetková šťava, ľad',
+                'Sunny Flower - 40ml TATRATEA 47, 20ml ružový sirup MONIN, 40ml ananásová šťava, 100ml prosecco, ľad',
+                'Green - 40ml TATRATEA 47, 200ml horúci zelený čaj, cukor / med',
+                'Camile - 40ml TATRATEA 47, 200ml horúci kamilkový čaj, cukor / med',
+                'Hot Yellow - 40ml TATRATEA 47, 20ml bazový sirup, 200ml horúca voda, citrón, limetka, mäta'
+            ],
+
+            'TATRATEA 57 Rosehip & Sea buckthorn': [
+                'Shot - 0,04l TATRATEA 57',
+                'Juicy - 40ml TATRATEA 57, 200ml tonic, citrónová šťava, ľad',
+                'Gerta - 40ml TATRATEA 57, 200ml zázvorový tonic, citrónová šťava, ľad',
+                'Ophelia - 40ml TATRATEA 57, 200ml biela Vinea, citrónová šťava, ľad',
+                'David - 40ml TATRATEA 57, 200ml červená Vinea, citrónová šťava, ľad',
+                'Glow - 40ml TATRATEA 57, 200ml Sprite / 7UP, citrónová šťava, ľad',
+                'Weekend - 40ml TATRATEA 57, 100ml prosecco, 100ml sóda, citrónová šťava, ľad',
+                'Zoe - 40ml TATRATEA 57, 20ml malinový sirup, 100ml prosecco, 100ml sóda, citrónová šťava, ľad',
+                'Amber - 40ml TATRATEA 57, 200ml pomarančový džús, citrónová šťava, ľad',
+                'Orange - 40ml TATRATEA 57, 200ml horúca voda, cukor / med',
+                'Rosie - 40ml TATRATEA 57, 200ml horúci šípkový čaj, cukor / med',
+                'Zack - 40ml TATRATEA 57, 200ml horúci pomarančový džús',
+                'Trick - 40ml TATRATEA 57, 200ml horúci čierny čaj, cukor / med'
+            ],
+
+            'TATRATEA 67 Apple & Pear': [
+                'Shot - 0,04l TATRATEA 67',
+                'Sky - 40ml TATRATEA 67, 200ml jablkový džús, citrónová šťava, ľad',
+                'Lily - 40ml TATRATEA 67, 200ml tonic, citrónová šťava, ľad',
+                'Eden - 40ml TATRATEA 67, 200ml zázvorový tonic, citrónová šťava, ľad',
+                'Spark - 40ml TATRATEA 67, 200ml cola, citrónová šťava, ľad',
+                'Hard Pear - 40ml TATRATEA 67, 50ml hruškové smoothie, 10ml zázvorový sirup, 100ml sóda, 100ml prosecco, ľad',
+                'Blake - 40ml TATRATEA 67, 20ml mätový sirup, 60ml hroznový džús, citrónová šťava, ľad',
+                'Sophie - 40ml TATRATEA 67, 15ml javorový sirup, 80ml hroznový džús, citrónová šťava, ľad',
+                'Grandma`s Basket - 40ml TATRATEA 67, jablkový ľad, 100ml sóda, citrónová šťava',
+                'Noah - 40ml TATRATEA 67, 200ml horúci ribezlový džús, cukor / med',
+                'Jules - 40ml TATRATEA 67, 200ml horúci jablkový džús, cukor / med',
+                'Snow - 40ml TATRATEA 67, 200ml horúci hruškový džús, cukor / med',
+                'December - 40ml TATRATEA 67, 200ml horúca voda, cukor / med',
+                'Elixir - 40ml TATRATEA 67, 200ml horúci mätový čaj, cukor / med'
+            ],
+
+            'TATRATEA 35 Herbal': [
+                'Shot - 0,04l TATRATEA 35 HERBAL',
+                'Kiwi & Herbs - 40ml TATRATEA 35 HERBAL, 100ml sóda, 100ml prosecco, 2 rozmixované kiwi, limetková šťava, ľad',
+                'Goldberg - 40ml TATRATEA 35 HERBAL, 200ml tonic, 2 rozmixované kiwi, limetková šťava, limetka, ľad',
+                'Herbie - 40ml TATRATEA 35 HERBAL, 200ml tonic, citrónová šťava, ľad',
+                'Little Mouse - 40ml TATRATEA 35 HERBAL, 200ml zázvorový tonic, citrónová šťava, ľad',
+                'Herbul - 40ml TATRATEA 35 HERBAL, 200ml Red Bull Sugar Free, limetková šťava, ľad',
+                'Dori - 40ml TATRATEA 35 HERBAL, 200ml Sprite / 7UP, citrónová šťava, ľad',
+                'Logan - 40ml TATRATEA 35 HERBAL, 200ml biela Vinea, citrónová šťava, ľad',
+                'Eli - 40ml TATRATEA 35 HERBAL, 200ml tonic, citrónová šťava, ľad',
+                'Quinn - 40ml TATRATEA 35 HERBAL, 20ml bazový sirup, 200ml sóda, citrónová šťava, citrón, limetka, mäta, ľad',
+                'Thom - 40ml TATRATEA 35 HERBAL, 10ml medový sirup, 200ml zázvorové pivo, ľad',
+                'FERENCE - 40ml TATRATEA 35 HERBAL, 200ml horúci jablkový džús',
+                'Bianca - 40ml TATRATEA 35 HERBAL, 200ml horúci zelený čaj, cukor / med',
+                'Remedy - 40ml TATRATEA 35 HERBAL, 200ml horúci kamilkový čaj, med',
+                'Gloria - 40ml TATRATEA 35 HERBAL, 200ml horúci zázvorový čaj, cukor / med',
+                'Tatra Herb - 40ml TATRATEA 35 HERBAL, 200ml horúci bylinkový čaj, cukor / med'
+            ],
+
+            'TATRATEA 35 Bitter': [
+                'Shot - 0,04l TATRATEA 35 BITTER',
+                'Gomez - 40ml TATRATEA 35 BITTER, 200ml zelený ľadový čaj, citrónová šťava, ľad',
+                'Sympose - 40ml TATRATEA 35 BITTER, 200ml biela Vinea, citrónová šťava, ľad',
+                'Hero - 40ml TATRATEA 35 BITTER, 200ml Tonic Targa Florio citrón, citrónová šťava, ľad',
+                'Zade - 40ml TATRATEA 35 BITTER, 200ml horúci zelený čaj, cukor / med',
+                'Poppy - 40ml TATRATEA 35 BITTER, 200ml horúci kamilkový čaj, cukor / med'
+            ],
+
+
+
+        };
+
+        function addTatrateaSection() {
+            const section = document.createElement('div');
+            section.classList.add('drink-section');
+
+            const select = document.createElement('select');
+            select.innerHTML = `<option disabled selected>Vyber TATRATEA</option>` +
+                Object.keys(tatrateaData).map(k => `<option>${k}</option>`).join('');
+            select.style.width = `50%`;
+
+            const removeBtn = document.createElement('button');
+            removeBtn.textContent = 'Odstrániť';
+            removeBtn.type = 'button';
+            removeBtn.style.marginTop = '10px';
+            removeBtn.style.backgroundColor = 'var(--danger)';
+            removeBtn.style.color = 'white';
+            removeBtn.onclick = () => section.remove();
+            section.appendChild(removeBtn);
+
+            const drinksDiv = document.createElement('div');
+            drinksDiv.classList.add('drink-options');
+
+            select.addEventListener('change', () => {
+                const selected = select.value;
+                drinksDiv.innerHTML = '';
+                tatrateaData[selected]?.forEach(drink => {
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.style.marginTop = '20px';
+                    checkbox.id = `${selected}-${drink}`.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9\-]/g, '');
+                    checkbox.name = `drink-${selected}`.replace(/\s+/g, '-');
+                    checkbox.value = drink;
+
+                    const label = document.createElement('label');
+                    const [drinkName, ...rest] = drink.split(" - ");
+                    label.innerHTML = `
+                        <span style="font-weight: 700; text-transform: uppercase;">${drinkName}</span>
+                        ${rest.length ? `<span style="font-weight: 400; text-transform: none;"> - ${rest.join(" - ")}</span>` : ''}
+                    `;
+                    label.setAttribute('for', checkbox.id);
+                    label.style.fontSize = '14px';
+                    label.style.display = 'block';
+                    label.style.marginTop = '6px';
+
+                    const recipe = document.createElement('div');
+                    recipe.textContent = `Receptúra pre ${drink}`;
+                    recipe.style.display = 'none';
+                    recipe.style.marginLeft = '20px';
+                    recipe.style.fontStyle = 'italic';
+
+                    checkbox.addEventListener('change', () => {
+                        recipe.style.display = checkbox.checked ? 'none' : 'none';
+                    });
+
+                    const container = document.createElement('div');
+                    container.style.display = 'flex';
+                    container.style.alignItems = 'flex-start';
+                    container.style.gap = '10px';
+                    container.style.marginBottom = '6px';
+
+                    // zarovnaj checkbox hore k textu a zmenši medzery
+                    checkbox.style.marginTop = '8px';
+                    checkbox.style.flexShrink = '0';
+
+                    container.appendChild(checkbox);
+                    container.appendChild(label);
+                    drinksDiv.appendChild(container);
+                });
+            });
+
+
+            section.appendChild(select);
+            section.appendChild(drinksDiv);
+            document.getElementById('tatratea-sections').appendChild(section);
+        }
+
+        function goBack() {
+            // window.location.href = 'main.html?from=drinky';
+            // localStorage.removeItem('userName');
+            localStorage.removeItem('businessName');
+            window.location.href = 'main.html';
+        }
+
+        window.onload = function () {
+            const userName = localStorage.getItem('userName');
+            const businessName = localStorage.getItem('businessName');
+            const heading = document.getElementById('business-name-heading');
+            const business = document.getElementById('page-title');
+
+            if (businessName) business.textContent = `Nápojový lístok - pre ${businessName}`;
+            else business.textContent = `Nápojový lístok`;
+            if (userName) heading.textContent = `Vitajte, ${userName}`;
+
+            addTatrateaSection(); // načítaj prvý výber TATRATEA automaticky
+        }
+
+        function resetForm() {
+            document.getElementById(`drink-form`).reset();
+            const container = document.getElementById('tatratea-sections');
+            container.innerHTML = '';
+            addTatrateaSection();
+        }
+
+        function submitForm() {
+            showModalMessage('🕐 Odosielam formulár...');
+            const form = document.getElementById('drink-form');
+            const statusDiv = document.getElementById('form-status');
+            const formData = new FormData(form);
+
+            // Pridanie údajov
+            formData.append('userName', localStorage.getItem('userName') || '-');
+            formData.append('businessName', localStorage.getItem('businessName') || '-');
+            formData.append('formType', 'drink');
+
+            // Zobraz loading
+            statusDiv.style.display = 'block';
+            statusDiv.style.backgroundColor = '#e6f0ff';
+            statusDiv.style.color = '#004085';
+            statusDiv.textContent = '🕐 Odosielam formulár...';
+
+            fetch('https://oz-aplikacia-form.onrender.com/send', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (response.ok) {
+                        
+                        showModalMessage('✅ Formulár bol úspešne odoslaný!');
+                        statusDiv.style.backgroundColor = '#d4edda';
+                        statusDiv.style.color = '#155724';
+                        statusDiv.textContent = '✅ Formulár bol úspešne odoslaný!';
+                        form.reset();
+                    } else {
+                        statusDiv.style.backgroundColor = '#f8d7da';
+                        statusDiv.style.color = '#721c24';
+                        statusDiv.textContent = '❌ Chyba pri odosielaní formulára.';
+                    }
+                })
+                .catch(error => {
+                    console.error('Chyba:', error);
+                    statusDiv.style.backgroundColor = '#f8d7da';
+                    statusDiv.style.color = '#721c24';
+                    statusDiv.textContent = '❌ Nepodarilo sa pripojiť k serveru.';
+                });
+        }
+
+
+
+    </script>
+
+    <div id="modalMessage"
+        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
+        <div
+            style="background:#fff; padding:30px 40px; border-radius:10px; text-align:center; font-size:18px; box-shadow:0 4px 15px rgba(0,0,0,0.2); max-width:90%; width:300px;">
+            <p id="modalText">Odosielam formulár...</p>
+            <button onclick="document.getElementById('modalMessage').style.display='none'"
+                style="margin-top:20px; padding:8px 16px;">Zavrieť</button>
+        </div>
+    </div>
+    <script>
+        function showModalMessage(message) {
+            const modal = document.getElementById('modalMessage');
+            const text = document.getElementById('modalText');
+            text.textContent = message;
+            modal.style.display = 'flex';
+        }
+    </script>
+</body>
+
+</html>
