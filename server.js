@@ -94,10 +94,13 @@ app.post('/send', upload.array('photos'), (req, res) => {
       content: file.buffer
     }));
 
+    
+    const recipient = data.formType === 'drink' ? 'grafik2@karloff.sk' : 'grafik@karloff.sk';
+
     const mailOptions = {
       from: 'grafik.karloff@gmail.com',
-      to: formType === 'drink' ? 'grafik2@karloff.sk' : 'grafik@karloff.sk',
-      subject: `Nový formulár - ${formType}`,
+      to: recipient,
+      subject: `TEST FORM - typ: ${formType}`,
       html: htmlContent,
       attachments: attachments
     };
