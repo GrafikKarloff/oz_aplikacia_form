@@ -96,7 +96,7 @@ app.post('/send', upload.array('photos'), (req, res) => {
 
     const mailOptions = {
       from: 'grafik.karloff@gmail.com',
-      to: 'grafik@karloff.sk',
+      to: formType === 'drink' ? 'grafik2@karloff.sk' : 'grafik@karloff.sk',
       subject: `Nový formulár - ${formType}`,
       html: htmlContent,
       attachments: attachments
