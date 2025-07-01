@@ -100,7 +100,7 @@ app.post('/send', upload.array('photos'), (req, res) => {
     const mailOptions = {
       from: 'grafik.karloff@gmail.com',
       to: recipient,
-      subject: `TEST FORM - typ: ${formType}`,
+      subject: `Nový OZ formulár: ${formType}`,
       html: htmlContent,
       attachments: attachments
     };
