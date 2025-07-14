@@ -62,13 +62,16 @@ app.post('/send', upload.array('photos'), (req, res) => {
 
     for (const key in data) {
       if (excludedKeys.includes(key) || key.startsWith('drink-')) continue;
+
       const value = Array.isArray(data[key]) ? data[key].join(', ') : data[key];
+      if (!value || value.trim() === '') continue; // <-- NEPRIDÁVAJ prázdne polia
+
       const formattedKey = key.charAt(0).toUpperCase() + key.slice(1);
       htmlContent += `
-        <tr>
-          <td style="border-bottom: 1px solid #eee;"><strong>${formattedKey}</strong></td>
-          <td style="border-bottom: 1px solid #eee;">${value}</td>
-        </tr>
+    <tr>
+      <td style="border-bottom: 1px solid #eee;"><strong>${formattedKey}</strong></td>
+      <td style="border-bottom: 1px solid #eee;">${value}</td>
+    </tr>
       `;
     }
 
@@ -94,11 +97,11 @@ app.post('/send', upload.array('photos'), (req, res) => {
       content: file.buffer
     }));
 
-    
+
     const recipient = data.formType === 'drink' ? 'grafik@karloff.sk' : 'grafik@karloff.sk';
 
     const mailOptions = {
-      from: 'FORMULÁR Obchodný zástupcovia',
+      from: 'grafik.karloff@gmail.com',
       to: recipient,
       subject: `Nový OZ formulár: ${formType}`,
       html: htmlContent,
