@@ -95,10 +95,10 @@ app.post('/send', upload.array('photos'), (req, res) => {
     }));
 
     
-    const recipient = data.formType === 'drink' ? 'grafik2@karloff.sk' : 'grafik@karloff.sk';
+    const recipient = data.formType === 'drink' ? 'grafik@karloff.sk' : 'grafik@karloff.sk';
 
     const mailOptions = {
-      from: 'grafik.karloff@gmail.com',
+      from: 'FORMULÁR Obchodný zástupcovia',
       to: recipient,
       subject: `Nový OZ formulár: ${formType}`,
       html: htmlContent,
