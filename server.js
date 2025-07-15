@@ -35,13 +35,22 @@ app.post('/send', upload.array('photos'), (req, res) => {
     Object.keys(data).forEach(key => {
       if (key.startsWith('drink-')) {
         const category = key.replace('drink-', '');
-        const values = Array.isArray(data[key]) ? data[key] : [data[key]];
+        const drinks = Array.isArray(data[key]) ? data[key] : [data[key]];
+
         if (!tatrateaGroups[category]) {
           tatrateaGroups[category] = [];
         }
-        tatrateaGroups[category] = tatrateaGroups[category].concat(values);
+
+        drinks.forEach(drink => {
+          const drinkId = `${category}-${drink}`.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9\-]/g, '');
+          const priceKey = `price-${drinkId}`;
+          const price = data[priceKey] || '';
+          const fullText = price ? `${drink} — ${price} €` : drink;
+          tatrateaGroups[category].push(fullText);
+        });
       }
     });
+
 
     // Základný obsah e-mailu
     let htmlContent = `
@@ -61,7 +70,8 @@ app.post('/send', upload.array('photos'), (req, res) => {
     `;
 
     for (const key in data) {
-      if (excludedKeys.includes(key) || key.startsWith('drink-')) continue;
+      if (excludedKeys.includes(key) || key.startsWith('drink-') ||
+        key.startsWith('price-')) continue;
 
       const value = Array.isArray(data[key]) ? data[key].join(', ') : data[key];
       if (!value || value.trim() === '') continue; // <-- NEPRIDÁVAJ prázdne polia
@@ -83,7 +93,9 @@ app.post('/send', upload.array('photos'), (req, res) => {
       for (const category of Object.keys(tatrateaGroups)) {
         htmlContent += `<p style="margin: 10px 0 5px;"><strong>${category}</strong></p><ul>`;
         tatrateaGroups[category].forEach(drink => {
-          htmlContent += `<li>${drink}</li>`;
+          const [name, ...rest] = drink.split(' - ');
+          const formatted = `<strong>${name}</strong>${rest.length ? ' - ' + rest.join(' - ') : ''}`;
+          htmlContent += `<li>${formatted}</li>`;
         });
         htmlContent += `</ul>`;
       }
@@ -98,7 +110,7 @@ app.post('/send', upload.array('photos'), (req, res) => {
     }));
 
 
-    const recipient = data.formType === 'drink' ? 'grafik@karloff.sk' : 'grafik@karloff.sk';
+    const recipient = data.formType === 'drink' ? 'grafik2@karloff.sk' : 'grafik@karloff.sk';
 
     const mailOptions = {
       from: 'grafik.karloff@gmail.com',
