@@ -656,10 +656,28 @@
                 tatrateaData[selected]?.forEach(drink => {
                     const checkbox = document.createElement('input');
                     checkbox.type = 'checkbox';
-                    checkbox.style.marginTop = '20px';
+                    checkbox.style.marginTop = '8px';
                     checkbox.id = `${selected}-${drink}`.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9\-]/g, '');
                     checkbox.name = `drink-${selected}`.replace(/\s+/g, '-');
                     checkbox.value = drink;
+
+                    // 🆕 Vstup na cenu
+                    const priceInput = document.createElement('input');
+                    priceInput.type = 'text';
+                    priceInput.placeholder = 'Cena v €';
+                    priceInput.style.fontSize = '12px';
+                    priceInput.style.border = '1px solid #ccc';
+                    priceInput.style.borderRadius = '4px';  
+                    priceInput.style.width = '50px';
+                    priceInput.style.height = '1px';
+                    priceInput.style.marginLeft = '8px';
+                    priceInput.style.display = 'none';
+                    priceInput.name = `price-${checkbox.id}`;
+
+                    // Zobraziť pole na cenu iba ak je zaškrtnutý
+                    checkbox.addEventListener('change', () => {
+                        priceInput.style.display = checkbox.checked ? 'inline-block' : 'none';
+                    });
 
                     const label = document.createElement('label');
                     const [drinkName, ...rest] = drink.split(" - ");
@@ -694,6 +712,7 @@
 
                     container.appendChild(checkbox);
                     container.appendChild(label);
+                    container.appendChild(priceInput);
                     drinksDiv.appendChild(container);
                 });
             });
@@ -732,21 +751,20 @@
         }
 
         function submitForm() {
-            showModalMessage('🕐 Odosielam formulár...');
             const form = document.getElementById('drink-form');
-            const statusDiv = document.getElementById('form-status');
-            const formData = new FormData(form);
+            const mesto = form.elements['mesto'].value.trim();
 
-            // Pridanie údajov
+            if (!mesto) {
+                showModalMessage('⚠️ Prosím, vyplňte pole Mesto.');
+                return;
+            }
+
+            showModalMessage('🕐 Odosielam formulár...');
+
+            const formData = new FormData(form);
             formData.append('userName', localStorage.getItem('userName') || '-');
             formData.append('businessName', localStorage.getItem('businessName') || '-');
             formData.append('formType', 'drink');
-
-            // Zobraz loading
-            statusDiv.style.display = 'block';
-            statusDiv.style.backgroundColor = '#e6f0ff';
-            statusDiv.style.color = '#004085';
-            statusDiv.textContent = '🕐 Odosielam formulár...';
 
             fetch('https://oz-aplikacia-form.onrender.com/send', {
                 method: 'POST',
@@ -754,25 +772,20 @@
             })
                 .then(response => {
                     if (response.ok) {
-                        
                         showModalMessage('✅ Formulár bol úspešne odoslaný!');
-                        statusDiv.style.backgroundColor = '#d4edda';
-                        statusDiv.style.color = '#155724';
-                        statusDiv.textContent = '✅ Formulár bol úspešne odoslaný!';
                         form.reset();
+                        document.getElementById('tatratea-sections').innerHTML = '';
+                        addTatrateaSection();
                     } else {
-                        statusDiv.style.backgroundColor = '#f8d7da';
-                        statusDiv.style.color = '#721c24';
-                        statusDiv.textContent = '❌ Chyba pri odosielaní formulára.';
+                        showModalMessage('❌ Chyba: formulár sa nepodarilo odoslať.');
                     }
                 })
                 .catch(error => {
                     console.error('Chyba:', error);
-                    statusDiv.style.backgroundColor = '#f8d7da';
-                    statusDiv.style.color = '#721c24';
-                    statusDiv.textContent = '❌ Nepodarilo sa pripojiť k serveru.';
+                    showModalMessage('❌ Nepodarilo sa pripojiť k serveru.');
                 });
         }
+
 
 
 
