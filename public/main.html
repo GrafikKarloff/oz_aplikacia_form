@@ -96,7 +96,7 @@
       border-radius: 8px;
       border: 1px solid #ccc;
       width: 100%;
-      display: block;
+      /* display: block; */
       transition: border-color 0.2s, box-shadow 0.2s;
     }
 
@@ -110,15 +110,37 @@
 
     .form-row {
       display: flex;
-      gap: 12px;
+      flex-direction: row;
+      gap: 10px;
       width: 100%;
+      max-width: 800px;
+      justify-content: space-between;
+    }
+
+    .form-row>* {
+      flex: 1;
+    }
+
+    .checkbox-group label {
+      display: flex;
+      align-items: center;
+      font-size: 15px;
+      margin: 5px 10px;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .checkbox-group input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+      /* ak tvoj prehliadač podporuje */
     }
 
     .checkbox-group {
       display: flex;
       flex-direction: row;
       justify-content: space-around;
-      flex-wrap: wrap;
       width: 100%;
     }
 
@@ -151,8 +173,23 @@
     .form-section form {
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
       width: 100%;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+      max-width: 800px;
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      font-weight: bold;
+      margin-bottom: 5px;
+      text-align: left;
     }
 
     .form-buttons {
@@ -197,6 +234,28 @@
 
     .resetButton:hover {
       background-color: var(--reset-dark);
+    }
+
+    input[type="checkbox"] {
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+      text-align: left;
+      width: 100%;
+      max-width: 800px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      max-width: 800px;
+      margin-bottom: 10px;
     }
 
     @media (max-width: 600px) {
@@ -254,16 +313,31 @@
     <div id="ad-change-placeholder"></div>
     <h2>Tlačená reklama pre <span id="business-ad"></span></h2>
     <form onsubmit="sendAdForm(event)">
-      <input name="mesto" placeholder="Mesto" type="text" />
-      <div class="form-row">
-        <input name="sirka" placeholder="Šírka" type="number" />
-        <input name="vyska" placeholder="Výška" type="number" />
-        <select name="jednotka">
-          <option value="mm">Milimetre</option>
-          <option value="cm">Centimetre</option>
-          <option value="m">Metre</option>
-        </select>
+      <div class="form-group">
+        <label for="mesto">Mesto:</label>
+        <input name="mesto" id="mesto" placeholder="Mesto" type="text" />
       </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="sirka">Šírka:</label>
+          <input name="sirka" id="sirka" placeholder="Šírka" type="number" />
+        </div>
+
+        <div class="form-group">
+          <label for="vyska">Výška:</label>
+          <input name="vyska" id="vyska" placeholder="Výška" type="number" />
+        </div>
+
+        <div class="form-group">
+          <label for="jednotka">Jednotka:</label>
+          <select name="jednotka" id="jednotka">
+            <option value="mm">Milimetre</option>
+            <option value="cm">Centimetre</option>
+            <option value="m">Metre</option>
+          </select>
+        </div>
+      </div>
+
       <div class="checkbox-group">
         <label><input name="tlacMaterial" type="radio" value="banner" /> Banner</label>
         <label><input name="tlacMaterial" type="radio" value="plastova-tabula" /> Plastová tabuľa</label>
@@ -273,6 +347,49 @@
       <textarea name="popis" placeholder="Popis"></textarea>
       <label>Priložte fotky (voliteľné):</label>
       <input accept="image/*" multiple="" name="photos" type="file" />
+
+      <!-- poslat na adresu checkbox -->
+      <div class="form-row" style="margin-top: 20px;">
+        <label for="delivery-checkbox"
+          style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-weight: 500;">
+          <input type="checkbox" id="delivery-checkbox" style="width: 18px; height: 18px;" />
+          Chcem zaslať na adresu prevádzky
+        </label>
+      </div>
+
+      <div id="address-section" style="display: none; margin-top: 15px;">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="adresa_ulica"></label>
+            <input type="text" name="adresa_ulica" id="adresa_ulica" placeholder="Ulica a číslo" />
+          </div>
+
+          <div class="form-group">
+            <label for="adresa_mesto"></label>
+            <input type="text" name="adresa_mesto" id="adresa_mesto" placeholder="Mesto" />
+          </div>
+
+          <div class="form-group">
+            <label for="adresa_psc"></label>
+            <input type="text" name="adresa_psc" id="adresa_psc" placeholder="PSČ" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="kontakt_osoba"></label>
+            <input type="text" name="kontakt_osoba" id="kontakt_osoba" placeholder="Kontaktná osoba" />
+          </div>
+
+          <div class="form-group">
+            <label for="kontakt_telefon"></label>
+            <input type="text" name="kontakt_telefon" id="kontakt_telefon" placeholder="Telefón" />
+          </div>
+        </div>
+      </div>
+
+
+      <!-- buttony spodne odoslat atd.. -->
       <div class="form-buttons">
         <button onclick="submitAdForm()" type="button">Odoslať</button>
         <button class="resetButton" onclick="resetForm('ad-form')" type="button">Reset</button>
@@ -322,7 +439,12 @@
     function resetForm(formId) {
       const form = document.querySelector(`#${formId} form`);
       form.reset();
-      showModalMessage('✅ Formulár bol úspešne odoslaný!');
+
+      // checkbox + skryť adresu
+      const checkbox = document.getElementById('delivery-checkbox');
+      const addressSection = document.getElementById('address-section');
+      if (checkbox) checkbox.checked = false;
+      if (addressSection) addressSection.style.display = 'none';
     }
 
     function logout() {
@@ -355,7 +477,7 @@
       })
         .then(response => {
           if (response.ok) {
-            
+
             showModalMessage('✅ Formulár bol úspešne odoslaný!');
             statusDiv.style.backgroundColor = '#d4edda';
             statusDiv.style.color = '#155724';
@@ -374,6 +496,11 @@
           statusDiv.textContent = '❌ Nepodarilo sa pripojiť k serveru.';
         });
     }
+
+    document.getElementById('delivery-checkbox').addEventListener('change', function () {
+      const section = document.getElementById('address-section');
+      section.style.display = this.checked ? 'block' : 'none';
+    });
 
   </script>
 
