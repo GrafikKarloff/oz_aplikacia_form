@@ -214,6 +214,13 @@
             font-size: 1.5em;
         }
 
+        #address-section input {
+            margin-top: 10px;
+            margin-left: 10px;
+            padding: 10px;
+        }
+
+
         @media (max-width: 600px) {
             .downButton {
                 flex-direction: column;
@@ -339,6 +346,24 @@
         <!-- Vlož do formulára -->
         <label>Priložte fotky (voliteľné):</label>
         <input accept="image/*" multiple="" name="photos" type="file" />
+
+        <!-- poslat na adresu checkbox -->
+        <div style="margin-top: 30px;">
+            <label style="font-weight: bold;">
+                <input type="checkbox" id="send-to-address-checkbox" />
+                Chcem zaslať na adresu prevádzky
+            </label>
+        </div>
+
+        <div id="address-section" style="display: none; margin-top: 15px;">
+            <input type="text" name="adresa_ulica" placeholder="Ulica a číslo" />
+            <input type="text" name="adresa_mesto" placeholder="Mesto" />
+            <input type="text" name="adresa_psc" placeholder="PSČ" />
+            <input type="text" name="kontakt_osoba" placeholder="Kontaktná osoba" />
+            <input type="text" name="kontakt_telefon" placeholder="Telefón" />
+        </div>
+
+        <!-- buttony spodne odoslat atd.. -->
         <div class="downButton">
             <button class="odoslatButton" onclick="submitForm()" type="button">Odoslať</button>
             <button class="resetButton" onclick="resetForm()" type="button">Reset</button>
@@ -667,7 +692,7 @@
                     priceInput.placeholder = 'Cena v €';
                     priceInput.style.fontSize = '12px';
                     priceInput.style.border = '1px solid #ccc';
-                    priceInput.style.borderRadius = '4px';  
+                    priceInput.style.borderRadius = '4px';
                     priceInput.style.width = '50px';
                     priceInput.style.height = '1px';
                     priceInput.style.marginLeft = '8px';
@@ -744,7 +769,10 @@
         }
 
         function resetForm() {
-            document.getElementById(`drink-form`).reset();
+            document.getElementById('drink-form').reset();
+            document.getElementById('send-to-address-checkbox').checked = false;
+            document.getElementById('address-section').style.display = 'none';
+
             const container = document.getElementById('tatratea-sections');
             container.innerHTML = '';
             addTatrateaSection();
@@ -766,7 +794,7 @@
             formData.append('businessName', localStorage.getItem('businessName') || '-');
             formData.append('formType', 'drink');
 
-            fetch('https://oz-aplikacia-form.onrender.com/send', {
+            fetch(' http://localhost:3000/send', {
                 method: 'POST',
                 body: formData
             })
@@ -786,7 +814,10 @@
                 });
         }
 
-
+        document.getElementById('send-to-address-checkbox').addEventListener('change', function () {
+            const section = document.getElementById('address-section');
+            section.style.display = this.checked ? 'block' : 'none';
+        });
 
 
     </script>
@@ -808,6 +839,7 @@
             modal.style.display = 'flex';
         }
     </script>
+
 </body>
 
 </html>
